@@ -1,0 +1,138 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>FSAST - Registeration</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Place favicon.ico in the root directory -->
+	<link rel="shortcut icon" type="image/x-icon" href="dashboard/assets/images/fsast_shop.png">
+
+	<!-- CSS here -->
+	<link rel="stylesheet" href="assets/css/bootstrap.css">
+	<link rel="stylesheet" href="assets/css/animate.css">
+	<link rel="stylesheet" href="assets/css/swiper-bundle.css">
+	<link rel="stylesheet" href="assets/css/slick.css">
+	<link rel="stylesheet" href="assets/css/magnific-popup.css">
+	<link rel="stylesheet" href="assets/css/font-awesome-pro.css">
+	<link rel="stylesheet" href="assets/css/flaticon_shofy.css">
+	<link rel="stylesheet" href="assets/css/spacing.css">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+
+<body>
+	<main>
+		<section class="breadcrumb__area include-bg text-center">
+			<div class="container">
+				<div class="row">
+					<div class="col-xxl-12">
+						<img class="img_1" src="amazonviewonly/fsast_shop.png" width="150" />
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="tp-login-area pb-1  p-relative z-index-1 fix">
+			<div class="tp-login-shape">
+				<img class="tp-login-shape-1" src="assets/img/login/login-shape-1.png" alt="">
+				<img class="tp-login-shape-2" src="assets/img/login/login-shape-2.png" alt="">
+				<img class="tp-login-shape-3" src="assets/img/login/login-shape-3.png" alt="">
+				<img class="tp-login-shape-4" src="assets/img/login/login-shape-4.png" alt="">
+			</div>
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-xl-6 col-lg-8">
+						<div class="tp-login-wrapper">
+							<div class="tp-login-top text-center mb-30">
+								<h3 class="tp-login-title">Sign Up FSAST-Shop</h3>
+								<p>Already have an account? <span><a th:href="@{/login}"
+											style="color: #FD4B6B;text-decoration: none;"> Sign In</a></span></p>
+							</div>
+							<div class="tp-login-option">
+								<div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+								<form th:action="@{/register}" th:object="${user}" method="post">
+									<div class="tp-login-input-wrapper">
+										<div class="tp-login-input-box">
+											<div class="tp-login-input">
+												<input type="text" id="firstName" name="fistName" required
+													placeholder="Enter full name" th:value="${user.firstName}"
+													th:field="*{firstName}">
+											</div>
+											<div class="tp-login-input-title">
+												<label for="firstName">Your Name</label>
+											</div>
+										</div>
+										<div class="tp-login-input-box">
+											<div class="tp-login-input">
+												<input type="email" class="form-control" required minlength="6"
+													name="email" id="email" aria-describedby="emailHelp"
+													placeholder="Enter your email" th:value="${user.email}">
+											</div>
+											<div class="tp-login-input-title">
+												<label for="email">Your Email</label>
+											</div>
+										</div>
+										<div class="tp-login-input-box">
+											<div class="tp-login-input">
+												<input type="tel" class="form-control" required name="mobileNumber"
+													minlength="10" maxlength="13" id="mobileNumber"
+													aria-describedby="emailHelp" placeholder="Enter your number"
+													th:value="${user.mobileNumber}">
+											</div>
+											<div class="tp-login-input-title">
+												<label for="mobileNumber">Mobile Number</label>
+											</div>
+										</div>
+										<div class="tp-login-input-box">
+											<div class="tp-login-input">
+												<input type="password" class="form-control" id="password"
+													name="password" required placeholder="Minimum 6 characters"
+													th:value="${user.password}" minlength="6">
+											</div>
+											<div class="tp-login-input-title">
+												<label for="password">Password</label>
+											</div>
+										</div>
+										<div
+											class="tp-login-suggetions d-sm-flex align-items-center justify-content-between mb-20">
+										</div>
+										<div class="tp-login-bottom">
+											<button class="tp-login-btn w-100" d="sign-in">Sign Up</button>
+										</div>
+									</div>
+								</form>
+								<div class="mt-2">
+									<h6>Purchasing for your business?</h6>
+									<div class="tp-login-forgot">
+										<a th:href="@{/shoplogin}" style="color: black;">Shop on Business</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<!-- JS here -->
+	<script src="assets/js/vendor/jquery.js"></script>
+	<script src="assets/js/vendor/waypoints.js"></script>
+	<script src="assets/js/bootstrap-bundle.js"></script>
+	<script src="assets/js/meanmenu.js"></script>
+	<script src="assets/js/swiper-bundle.js"></script>
+	<script src="assets/js/slick.js"></script>
+	<script src="assets/js/range-slider.js"></script>
+	<script src="assets/js/magnific-popup.js"></script>
+	<script src="assets/js/nice-select.js"></script>
+	<script src="assets/js/purecounter.js"></script>
+	<script src="assets/js/countdown.js"></script>
+	<script src="assets/js/wow.js"></script>
+	<script src="assets/js/isotope-pkgd.js"></script>
+	<script src="assets/js/imagesloaded-pkgd.js"></script>
+	<script src="assets/js/ajax-form.js"></script>
+</body>
+
+</html>

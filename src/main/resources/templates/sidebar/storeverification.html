@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>FSAST - Shop Verification</title>
+	<link rel="shortcut icon" href="../../dashboard/assets/images/fsast_shop.png" />
+	<link rel="stylesheet" href="css/bootstrap1.min.css" />
+	<link rel="stylesheet" href="vendors/themify-icons.css" />
+	<link rel="stylesheet" href="vendors/all.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/jquery.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/responsive.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/buttons.dataTables.min.css" />
+
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/style1.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link rel="stylesheet"
+		href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body class="crm_body_bg">
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var shopCreated = /*[[${payemtingsettingCreated}]]*/ 'default';
+		if (!shopCreated) {
+			Swal.fire({
+				title: 'Error!',
+				text: 'Kindly establish your store first.',
+				icon: 'error',
+				confirmButtonText: 'OK'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					window.location.href = '/shopsetting';
+				}
+			});
+		}
+    /*]]>*/
+	</script>
+	
+	<!-- loader_refresh -->
+	<div th:replace="sidebar/mainpanelverifyshop::loader_refresh">...</div>
+	<!--loader_refresh area end -->
+	
+	<!-- Mobile menu bottom -->
+	<div th:replace="sidebar/mainpanelverifyshop::mobile_bottom_menu">...</div>
+	<!-- mobile menu area end -->
+
+	<nav class="sidebar">
+		<div th:if="${storeverification != null}"
+			class="aiz-user-sidenav rounded overflow-auto c-scrollbar-light pb-5 pb-xl-0">
+			<div th:if="${storeverification.status == 'Y'}">
+				<div th:replace="sidebar/mainpanelverifyshop::sidebar">...</div>
+			</div>
+			<div th:if="${storeverification.status == 'N'}">
+				<div th:replace="sidebar/mainpanel::sidebar">...
+				</div>
+			</div>
+		</div>
+		<div th:if="${storeverification == null}"
+			class="aiz-user-sidenav rounded overflow-auto c-scrollbar-light pb-5 pb-xl-0">
+			<div th:replace="sidebar/mainpanel::sidebar">...
+			</div>
+		</div>
+	</nav>
+
+	<section class="main_content dashboard_part large_header_bg">
+		<!--NAVBAR-->
+		<div th:replace="sidebar/mainpanelverifyshop::navbar">...</div>
+
+		<div class="main_content_iner ">
+			<div class="container-fluid p-0">
+				<div class="row justify-content-center">
+					<div class="col-lg-12">
+						<div class="white_card card_height_100 mb_30">
+							<div class="white_card_header">
+								<div class="box_header m-0">
+									<div class="main-title">
+										<h3 class="m-0" th:text="#{verifivation.shopverify}">Shop Verification</h3>
+									</div>
+								</div>
+							</div>
+							<div class="white_card_body">
+								<div class="QA_section">
+									<div class="QA_table mb_30">
+										<form th:action="@{/storeverification}" method="POST"
+											enctype="multipart/form-data" th:object="${storeverification}"
+											th:onsubmit="return changeCircleColor()">
+											<input type="hidden" name="id" th:field="*{id}">
+											<div class="card">
+												<div class="card-header">
+													<h4 class="mb-0 h6" th:text="#{verifivation.verifyinfo}">
+														Verification Info</h4>
+												</div>
+												<div class="card-body">
+													<div class="row">
+														<div class="col-md-2">
+															<label th:text="#{verifivation.fullname}">Full Name <span
+																	class="text-danger">*</span></label>
+														</div>
+														<div class="col-md-10">
+															<input type="text" class="form-control mb-3"
+																placeholder="Full Name" th:field="*{userName}"
+																name="element_0" required>
+														</div>
+													</div>
+
+													<div class="row">
+														<div class="col-md-2">
+															<label th:text="#{verifivation.passportcountry}">Passport
+																country <span class="text-danger">*</span></label>
+														</div>
+														<div class="col-md-10">
+															<input type="text" class="form-control mb-3"
+																placeholder="Passport country"
+																th:field="*{passportCountry}" name="element_2" required>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-md-2">
+															<label th:text="#{verifivation.livingaddress}">Your living
+																address <span class="text-danger">*</span></label>
+														</div>
+														<div class="col-md-10">
+															<input type="text" class="form-control mb-3"
+																th:field="*{address}" placeholder="Your living address"
+																name="element_3" required=>
+														</div>
+													</div>
+
+													<div class="row">
+														<div class="col-md-2">
+															<label th:text="#{verifivation.validid}">Valid ID (driver's
+																license or ID
+																card) <span class="text-danger">*</span></label>
+														</div>
+														<div class="col-md-10">
+															<input type="file" id="myFile" name="myFile"
+																class="uploads-file" required>
+														</div>
+													</div>
+
+													<div class="text-right mt-4">
+														<button type="submit" class="btn btn-primary" id="step_3"
+															onclick="localStorage.setItem('currentStep', 3)"
+															th:text="#{verifivation.apply}">Apply</button>
+													</div>
+												</div>
+											</div>
+
+										</form>
+										<script>
+											function changeCircleColor() {
+												document.cookie = "step-3-color=yellow; path=/";
+												document.cookie = "line-3-color=yellow; path=/";
+												document.cookie = "step3completed=true; path=/";
+												return true;
+											}
+										</script>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-12">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--FOOTER-->
+		<!--<div th:replace="sidebar/mainpanelverifyshop::footer">...</div>-->
+	</section>
+
+
+
+	<!--save message alert-->
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var message = [[${message}]];
+		var messageshop = [[${messageshop}]];
+		if (message) {
+			swal("Good job!", message, "success")
+		}
+		if (messageshop) {
+			swal(messageshop)
+		}
+
+		/*]]>*/
+	</script>
+
+
+	<script src="vendors/datatable/js/jquery1-3.4.1.min.js"></script>
+	<script src="vendors/datatable/js/popper1.min.js"></script>
+	<script src="vendors/datatable/js/bootstrap1.min.js"></script>
+	<script src="vendors/datatable/js/metisMenu.js"></script>
+
+	<script src="vendors/datatable/js/jquery.dataTables.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.responsive.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.buttons.min.js"></script>
+	<script src="vendors/datatable/js/buttons.flash.min.js"></script>
+	<script src="vendors/datatable/js/jszip.min.js"></script>
+	<script src="vendors/datatable/js/pdfmake.min.js"></script>
+	<script src="vendors/datatable/js/vfs_fonts.js"></script>
+	<script src="vendors/datatable/js/buttons.html5.min.js"></script>
+	<script src="vendors/datatable/js/buttons.print.min.js"></script>
+
+
+	<script src="vendors/datatable/js/perfect-scrollbar.min.js"></script>
+	<script src="vendors/datatable/js/scrollable-custom.js"></script>
+
+
+	<script src="vendors/datatable/js/custom.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,371 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>FSAST - Checkout</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Place favicon.ico in the root directory -->
+	<link rel="shortcut icon" type="image/x-icon" href="dashboard/assets/images/fsast_shop.png">
+
+	<!-- CSS here -->
+	<link rel="stylesheet" href="assets/css/bootstrap.css">
+	<link rel="stylesheet" href="assets/css/animate.css">
+	<link rel="stylesheet" href="assets/css/swiper-bundle.css">
+	<link rel="stylesheet" href="assets/css/slick.css">
+	<link rel="stylesheet" href="assets/css/magnific-popup.css">
+	<link rel="stylesheet" href="assets/css/font-awesome-pro.css">
+	<link rel="stylesheet" href="assets/css/flaticon_shofy.css">
+	<link rel="stylesheet" href="assets/css/spacing.css">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+	<!-- Pre-loader -->
+	<div th:replace="amazonpage::preloader">...</div>
+	<!-- pre loader area end -->
+
+	<!-- back to top start -->
+	<div th:replace="amazonpage::back_to_top">...</div>
+	<!-- back to top end -->
+
+	<!-- offcanvas area start -->
+	<div th:replace="amazonpage::mobile-sidebar">...</div>
+	<div class="body-overlay"></div>
+	<!-- offcanvas area end -->
+	<!-- Mobile menu bottom -->
+	<div th:replace="amazonpage::mobile_bottom_menu">...</div>
+	<!-- mobile menu area end -->
+
+	<!--Mobile search -->
+	<div th:replace="amazonpage::mobile_search">...</div>
+	<!-- search area end -->
+
+	<!-- CART-SIDEBAR -->
+	<div th:replace="amazonpage::cart_sidebar">...</div>
+	<!-- cart mini area end -->
+
+	<!-- Header -->
+	<div th:replace="amazonpage::fsastheader">...</div>
+	<!-- header area end -->
+	<div th:replace="amazonpage::down_move_header">...</div>
+
+	<main>
+
+		<!-- breadcrumb area start -->
+		<section class="breadcrumb__area include-bg pt-95 pb-50" data-bg-color="#EFF1F5">
+			<div class="container">
+				<div class="row">
+					<div class="col-xxl-12">
+						<div class="breadcrumb__content p-relative z-index-1">
+							<h3 class="breadcrumb__title" th:text="#{checkout.checkout}">Checkout</h3>
+							<div class="breadcrumb__list">
+								<span><a th:href="@{/home}" th:text="#{header.home}">Home</a></span>
+								<span th:text="#{checkout.checkout}">Checkout</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- breadcrumb area end -->
+
+		<!-- checkout area start -->
+		<section class="tp-checkout-area pb-120" data-bg-color="#EFF1F5">
+			<div class="container">
+				<div class="row">
+					<!--<div class="col-xl-7 col-lg-7">
+						<div class="tp-checkout-verify">
+							<div class="tp-checkout-verify-item">
+								<p class="tp-checkout-verify-reveal">Returning customer? <button type="button"
+										class="tp-checkout-login-form-reveal-btn">Click here to login</button></p>
+
+								<div id="tpReturnCustomerLoginForm" class="tp-return-customer">
+									<form action="#">
+
+										<div class="tp-return-customer-input">
+											<label>Email</label>
+											<input type="text" placeholder="Your Email">
+										</div>
+										<div class="tp-return-customer-input">
+											<label>Password</label>
+											<input type="password" placeholder="Password">
+										</div>
+
+										<div
+											class="tp-return-customer-suggetions d-sm-flex align-items-center justify-content-between mb-20">
+											<div class="tp-return-customer-remeber">
+												<input id="remeber" type="checkbox">
+												<label for="remeber">Remember me</label>
+											</div>
+											<div class="tp-return-customer-forgot">
+												<a href="forgot.html">Forgot Password?</a>
+											</div>
+										</div>
+										<button type="submit"
+											class="tp-return-customer-btn tp-checkout-btn">Login</button>
+									</form>
+								</div>
+							</div>
+							<div class="tp-checkout-verify-item">
+								<p class="tp-checkout-verify-reveal">Have a coupon? <button type="button"
+										class="tp-checkout-coupon-form-reveal-btn">Click here to enter your
+										code</button></p>
+
+								<div id="tpCheckoutCouponForm" class="tp-return-customer">
+									<form action="#">
+										<div class="tp-return-customer-input">
+											<label>Coupon Code :</label>
+											<input type="text" placeholder="Coupon">
+										</div>
+										<button type="submit"
+											class="tp-return-customer-btn tp-checkout-btn">Apply</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>-->
+					<div class="col-lg-7">
+						<div class="tp-checkout-bill-area">
+							<h3 class="tp-checkout-bill-title" th:text="#{checkout.billingdetail}">Billing Details</h3>
+							<div class="tp-checkout-bill-form">
+								<form>
+									<div class="tp-checkout-bill-inner">
+										<div class="row" th:each="shipping : ${shippingOrderAddress}">
+											<div class="col-md-12">
+												<div class="tp-checkout-input">
+													<label th:text="#{checkout.streetaddress}">Street
+														address</label><span style="color: red;">*</span>
+													<input type="text" id="shippingAddress"
+														th:value="${shipping.shippingAddress}"
+														placeholder="House number and street name" required>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<div class="tp-checkout-input">
+													<label th:text="#{vieworder.state1}">State</label><span
+														style="color: red;">*</span>
+													<input type="text" placeholder="Enter your state" id="state"
+														th:value="${shipping.state}" required>
+												</div>
+											</div>
+
+											<div class="col-md-12">
+												<div class="tp-checkout-input">
+													<label th:text="#{dashboard.coutryreginn}">Country / Region
+													</label><span style="color: red;">*</span>
+													<input type="text" placeholder="Enter your country" id="country"
+														th:value="${shipping.country}" required>
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="tp-checkout-input">
+													<label th:text="#{vieworder.pincode}">Pincode</label><span
+														style="color: red;">*</span>
+													<input type="text" placeholder="Pin code"
+														th:value="${shipping.pincode}" id="pincode" required>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<div class="tp-checkout-input">
+													<label th:text="#{dashboard.orderphoe}">Phone </label><span
+														style="color: red;">*</span>
+													<input type="text" placeholder="Phone No."
+														th:value="${shipping.shippingPhoneNo}" id="shippingPhoneNo"
+														required>
+												</div>
+											</div>
+
+											<div class="col-md-12">
+												<div class="tp-checkout-input">
+													<label th:text="#{checkout.ordernotesop}">Order notes
+														(optional)</label>
+													<textarea id="remarks"
+														placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-5">
+						<!-- checkout place order -->
+						<div class="tp-checkout-place white-bg">
+							<h3 class="tp-checkout-place-title" th:text="#{header.order}">Your Order</h3>
+							<div class="tp-order-info-list">
+								<ul>
+									<li class="tp-order-info-list-header">
+										<h4 th:text="#{main.mainproduct}">Product</h4>
+										<h4 th:text="#{checkout.qty}">Qty</h4>
+										<h4 th:text="#{checkout.totol}">Total</h4>
+									</li>
+									<li class="tp-order-info-list-desc" th:each="cart ,iStat : ${cartItemList}">
+										<span th:text="${cart.productsDetail.products.name}"></span><span>x</span><span
+											th:text="${cart.quantity}"></span>
+										<span th:text="'$ '+${cart.totalAmount}">$274:00</span>
+									</li>
+									<li class="tp-order-info-list-subtotal">
+										<span th:text="#{shourya.shoppingsubtotal}">Subtotal</span>
+										<span th:text="'$ '+ ${totalAmt}"></span>
+									</li>
+									<li class="tp-order-info-list-shipping">
+										<span th:text="#{cart.shipping12}">Shipping</span>
+										<div
+											class="tp-order-info-list-shipping-item d-flex flex-column align-items-end">
+											<span>
+												<input id="flat_rate" type="radio" name="shipping" disabled>
+												<span for="flat_rate" th:text="#{checkout.tax}">Tax:
+												</span><label style="cursor: not-allowed;">$0.00</label>
+											</span>
+											<span>
+												<input id="local_pickup" type="radio" name="shipping" disabled>
+												<span for="local_pickup" th:text="#{checkout.Freight}">Freight:
+												</span><label style="cursor: not-allowed;">$0.00</label>
+											</span>
+											<span>
+												<input id="free_shipping" type="radio" name="shipping" checked>
+												<label for="free_shipping" th:text="#{cart.freeshipping123}">Free
+													shipping</label>
+											</span>
+										</div>
+									</li>
+									<li class="tp-order-info-list-total">
+										<span th:text="#{checkout.totoldoll}">Total ($)</span>
+										<span><input name="buyAmount" id="buyAmount" th:value="${totalAmt}"
+												class="text-end" style="border: none;" readonly></span>
+									</li>
+								</ul>
+							</div>
+
+							<div class="tp-checkout-payment">
+								<div class="tp-checkout-payment-item">
+									<input type="radio" id="back_transfer" name="payment" disabled>
+									<label for="back_transfer" data-bs-toggle="direct-bank-transfer"
+										style="cursor: not-allowed;" th:text="#{checkout.directbank}">Direct Bank
+										Transfer</label>
+									<div class="tp-checkout-payment-desc direct-bank-transfer">
+										<p th:text="#{checkout.paymetnmethodpara}">This payment method is not yet
+											available in your region</p>
+									</div>
+								</div>
+								<div class="tp-checkout-payment-item">
+									<input type="radio" id="cheque_payment" name="payment" disabled>
+									<label for="cheque_payment" th:text="#{checkout.paypal}"
+										style="cursor: not-allowed;">Paypal</label>
+									<div class="tp-checkout-payment-desc cheque-payment">
+										<p th:text="#{checkout.paymetnmethodpara}">This payment method is not yet
+											available in your region</p>
+									</div>
+								</div>
+								<!--<div class="tp-checkout-payment-item">
+									<input type="radio" id="cod" name="payment">
+									<label for="cod">Cash on Delivery</label>
+									<div class="tp-checkout-payment-desc cash-on-delivery">
+										<p>This payment method is not yet available in your region</p>
+									</div>
+								</div>-->
+								<div class="tp-checkout-payment-item paypal-payment">
+									<input type="radio" id="balance" name="payment" checked>
+									<label for="balance" th:text="#{dashboard.bala}">Balance </label>
+									<span th:if="${walletAmtList} != null"
+										th:text="'$ '+${walletAmtList.walletAmount}"></span>
+									<span th:if="${walletAmtList} == null">$ 0.0</span>
+								</div>
+							</div>
+							<div class="tp-checkout-btn-wrapper">
+								<button class="tp-checkout-btn w-100" onclick="paidPayment()"
+									th:text="#{checkout.placeorder}">Place Order</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		</section>
+		<!-- checkout area end -->
+
+
+	</main>
+
+	<script>
+		function paidPayment() {
+			debugger;
+			let walletAmt = JSON.parse(document.getElementById("walletamt").value);
+			let buyAmount = JSON.parse(document.getElementById("buyAmount").value);
+
+			//shipping address
+			let shippingAddress = document.getElementById("shippingAddress").value;
+			let state = document.getElementById("state").value;
+			let country = document.getElementById("country").value;
+			let pincode = document.getElementById("pincode").value;
+			let shippingPhoneNo = document.getElementById("shippingPhoneNo").value;
+			let remarks = document.getElementById("remarks").value;
+
+			var checkboxes = document.querySelectorAll('input[name="productDetailId[]"]');
+
+			if (walletAmt <= buyAmount) {
+				swal("You have $" + walletAmt + " in wallet. Please, add amount in the wallet!!!");
+			} else {
+				var productDetailId = [];
+				for (var i = 0; i < checkboxes.length; i++) {
+					productDetailId.push(checkboxes[i].value);
+				}
+
+				$.ajax({
+					url: "/buy_order",
+					data: JSON.stringify({
+						buyAmount: buyAmount, productDetailId: productDetailId, shippingAddress: shippingAddress, state: state, country: country,
+						pincode: pincode, shippingPhoneNo: shippingPhoneNo, remarks: remarks
+					}),
+					contentType: "application/json",
+					type: "post",
+					dataType: "json",
+					success: function (data) {
+						console.log(data);
+					},
+
+					error: function (error) {
+						console.log(error);
+					}
+				})
+				setTimeout(function () {
+					location.reload();
+				}, 1000);
+			}
+		}
+	</script>
+
+
+	<!-- footer area start -->
+	<div th:replace="amazonpage::fsastfooter">...</div>
+	<!-- footer area end -->
+
+
+	<!-- JS here -->
+	<script src="assets/js/vendor/jquery.js"></script>
+	<script src="assets/js/vendor/waypoints.js"></script>
+	<script src="assets/js/bootstrap-bundle.js"></script>
+	<script src="assets/js/meanmenu.js"></script>
+	<script src="assets/js/swiper-bundle.js"></script>
+	<script src="assets/js/slick.js"></script>
+	<script src="assets/js/range-slider.js"></script>
+	<script src="assets/js/magnific-popup.js"></script>
+	<script src="assets/js/nice-select.js"></script>
+	<script src="assets/js/purecounter.js"></script>
+	<script src="assets/js/countdown.js"></script>
+	<script src="assets/js/wow.js"></script>
+	<script src="assets/js/isotope-pkgd.js"></script>
+	<script src="assets/js/imagesloaded-pkgd.js"></script>
+	<script src="assets/js/ajax-form.js"></script>
+	<script src="assets/js/main.js"></script>
+</body>
+
+</html>

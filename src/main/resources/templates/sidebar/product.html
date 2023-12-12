@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>FSAST - Product</title>
+	<link rel="shortcut icon" href="../../dashboard/assets/images/fsast_shop.png" />
+	<link rel="stylesheet" href="css/bootstrap1.min.css" />
+	<link rel="stylesheet" href="vendors/themify-icons.css" />
+	<link rel="stylesheet" href="vendors/all.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/jquery.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/responsive.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/buttons.dataTables.min.css" />
+
+
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/style1.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link rel="stylesheet"
+		href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+	<style>
+		.switch {
+			position: relative;
+			display: inline-block;
+			width: 45px;
+			height: 24px;
+		}
+
+		.switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #ccc;
+			-webkit-transition: .4s;
+			transition: .4s;
+			border-radius: 34px;
+		}
+
+		.slider.round {
+			border-radius: 17px;
+		}
+
+		.slider:before {
+			position: absolute;
+			content: "";
+			height: 16px;
+			width: 16px;
+			left: 4px;
+			bottom: 4px;
+			background-color: white;
+			-webkit-transition: .4s;
+			transition: .4s;
+			border-radius: 50%;
+		}
+
+		input:checked+.slider {
+			background-color: #28A745;
+			/* Color when checked */
+		}
+
+		input:focus+.slider {
+			box-shadow: 0 0 1px #28A745;
+		}
+
+		input:checked+.slider:before {
+			-webkit-transform: translateX(20px);
+			-ms-transform: translateX(20px);
+			transform: translateX(20px);
+		}
+	</style>
+
+	<style>
+		.switch::after {
+
+			height: 0px;
+
+		}
+	</style>
+	</style>
+
+</head>
+
+<body class="crm_body_bg">
+
+	<!-- loader_refresh -->
+	<div th:replace="sidebar/mainpanelverifyshop::loader_refresh">...</div>
+	<!--loader_refresh area end -->
+
+	<!-- Mobile menu bottom -->
+	<div th:replace="sidebar/mainpanelverifyshop::mobile_bottom_menu">...</div>
+	<!-- mobile menu area end -->
+	<nav class="sidebar">
+		<div th:if="${storeverification != null}"
+			class="aiz-user-sidenav rounded overflow-auto c-scrollbar-light pb-5 pb-xl-0">
+			<div th:if="${storeverification.status == 'Y'}">
+				<div th:replace="sidebar/mainpanelverifyshop::sidebar">...</div>
+			</div>
+			<div th:if="${storeverification.status == 'N'}">
+				<div th:replace="sidebar/mainpanel::sidebar">...
+				</div>
+			</div>
+		</div>
+		<div th:if="${storeverification == null}"
+			class="aiz-user-sidenav rounded overflow-auto c-scrollbar-light pb-5 pb-xl-0">
+			<div th:replace="sidebar/mainpanel::sidebar">...
+			</div>
+		</div>
+	</nav>
+
+	<section class="main_content dashboard_part large_header_bg" style="background-color: #e6f1f5;">
+		<!--NAVBAR-->
+		<div th:replace="sidebar/mainpanelverifyshop::navbar">...</div>
+		<br>
+		<div class="conatiner">
+			<div class="row gutters-10 justify-content-center">
+				<div class="col-md-4 mx-auto mb-3">
+					<a th:href="@{/productLibrary}" style="text-decoration: none;">
+						<div
+							class="p-3 rounded mb-3 c-pointer text-center bg-white shadow-sm hov-shadow-lg has-transition">
+
+							<span class="d-flex align-items-center justify-content-center mb-3"
+								style="font-size: 55px;">
+								<i class="bi bi-filter-circle-fill" style="color: #6C757D;"></i>
+							</span>
+							<div class="fs-18" th:text="#{main.productlib}" style="color: #30778A;">Product
+								Library
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="main_content_iner " style="background-color: #e6f1f5;">
+			<div class="container-fluid p-0">
+				<div class="row justify-content-center">
+					<div class="col-lg-12">
+						<div class="white_card card_height_100 mb_30">
+							<div class="white_card_header">
+								<div class="box_header m-0">
+									<div class="main-title">
+										<h3 class="m-0" th:text="#{main.allproduct}">All products</h3>
+									</div>
+								</div>
+							</div>
+							<div class="white_card_body">
+								<div class="QA_section">
+									<!--<div class="white_box_tittle list_header">
+										<h4></h4>
+										<div class="box_right d-flex lms_block">
+											<div class="serach_field_2">
+												<div class="search_inner">
+													<form Active="#">
+														<div class="search_field">
+															<input type="text" placeholder="Search content here...">
+														</div>
+														<button type="submit"> <i class="bi bi-search"></i> </button>
+													</form>
+												</div>
+											</div>
+											<div class="add_button ms-2">
+												<button onclick="resetPage()" id="reset" class="btn_1"
+													style="background-color: #30778A;border: none;"><i
+														class="bi bi-arrow-clockwise"></i>
+													<span th:text="#{main.refresh}">Refresh</span> </button>
+											</div>
+										</div>
+									</div>-->
+									<div class="QA_table mb_30">
+										<table class="table lms_table_active" id="serialNumber">
+											<thead>
+												<tr>
+													<th scope="col" th:text="#{main.mainproductname}">Name</th>
+													<th scope="col" th:text="#{main.mainoption}">Options</th>
+													<th scope="col" th:text="#{main.mainproductcat}">Category</th>
+													<!--<th class="col" th:text="#{main.purchasepr}">Purchase Price</th>-->
+													<th class="col" th:text="#{main.unitpr}">Unit Price
+													</th>
+													<th class="col" th:text="#{main.disprice}">Discount Price</th>
+													<th class="col" th:text="#{main.estimatepr}">Estimated Profit</th>
+													<th scope="col" th:text="#{main.published}">Published</th>
+													<!--<th scope="col" th:text="#{main.qty}">Currnet Qty</th>-->
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="detail,iter  : ${productDetailList}">
+													<th scope="row">
+														<img style="width: 100%; height: 75px  ; object-fit: contain;"
+															th:src="@{/addproductimg/{imageName}(imageName=${detail.products.imageName})}">&nbsp;
+														<span class="mobile desktop productname" style="color: #6C757D;"
+															th:text="${detail.products.name}"></span>
+													</th>
+													<td>
+														<a class="btn btn-soft-info btn-icon btn-circle btn-sm"
+															th:href="@{/updateProduct/{id}(id=${detail.productDetailId})}"
+															title="Edit">
+															<i class="bi bi-person-circle"></i>
+														</a>
+													</td>
+
+													<td th:text="${detail.products.category.name}"></td>
+													<!--<td th:text="${detail.products.price}"></td>-->
+													<td th:text="'$ '+${detail.unitPrice}"></td>
+													<td th:text="'$ '+${detail.discountPrice}"></td>
+													<td th:text="'$ '+${detail.estimatedProfit}"></td>
+													<td><label class="switch" th:if="${detail.publish}=='1'">
+															<input type="checkbox" id="publishedId" name="publishedId"
+																onchange="updatePublished(event)"
+																th:value="${detail.productDetailId}" checked>
+															<span class="slider round"></span>
+														</label>
+														<label class="switch" th:if="${detail.publish}=='0'">
+															<input type="checkbox" id="publishedId" name="publishedId"
+																onchange="updatePublished(event)"
+																th:value="${detail.productDetailId}">
+															<span class="slider round"></span>
+														</label>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-12">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--FOOTER-->
+		<div th:replace="sidebar/mainpanelverifyshop::footer">...</div>
+	</section>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			document.getElementById('language-select').addEventListener('change', function () {
+				console.log('Language selected:', this.value);
+				window.location.href = '?lang=' + this.value;
+			});
+		});
+		$(document).ready(function () {
+			var currentLang = $('html').attr('lang');
+			$('#language-select').val(currentLang);
+		});
+	</script>
+
+	<!--serial number-->
+	<script>
+		let table = document.querySelector("#serialNumber");
+		let rows = table.querySelectorAll("tbody tr");
+		for (let i = 0; i < rows.length; i++) {
+			let firstCell = rows[i].querySelector("td:first-child");
+			firstCell.textContent = i + 1;
+		}
+	</script>
+
+	<script>
+		function updatePublished(event) {
+			let publishedId = event.target.value;
+			$.ajax({
+				url: "/published_update",
+				data: JSON.stringify({publishedId: publishedId}),
+				contentType: "application/json",
+				type: "post",
+				dataType: "json",
+				success: function (response) {
+					console.log(response);
+				},
+				error: function (error) {
+					console.log(error);
+				}
+			})
+		}
+	</script>
+	<script>
+		function resetPage() {
+			window.location.reload();
+		}
+	</script>
+
+
+	<script src="vendors/datatable/js/jquery1-3.4.1.min.js"></script>
+	<script src="vendors/datatable/js/popper1.min.js"></script>
+	<script src="vendors/datatable/js/bootstrap1.min.js"></script>
+	<script src="vendors/datatable/js/metisMenu.js"></script>
+	<script src="vendors/datatable/js/jquery.dataTables.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.responsive.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.buttons.min.js"></script>
+	<script src="vendors/datatable/js/buttons.flash.min.js"></script>
+	<script src="vendors/datatable/js/jszip.min.js"></script>
+	<script src="vendors/datatable/js/pdfmake.min.js"></script>
+	<script src="vendors/datatable/js/vfs_fonts.js"></script>
+	<script src="vendors/datatable/js/buttons.html5.min.js"></script>
+	<script src="vendors/datatable/js/buttons.print.min.js"></script>
+	<script src="vendors/datatable/js/perfect-scrollbar.min.js"></script>
+	<script src="vendors/datatable/js/scrollable-custom.js"></script>
+	<script src="vendors/datatable/js/custom.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>FSAST - Seller</title>
+	<link rel="shortcut icon" href="../../dashboard/assets/images/fsast_shop.png" />
+	<link rel="stylesheet" href="css/bootstrap1.min.css" />
+	<link rel="stylesheet" href="vendors/themify-icons.css" />
+	<link rel="stylesheet" href="vendors/all.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/jquery.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/responsive.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/buttons.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/style1.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link rel="stylesheet"
+		href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+
+<body class="crm_body_bg">
+
+
+	<!--loader -->
+
+	<div id="loader-wrapper" th:fragment="loader_refresh">
+		<div id="loader"></div>
+
+		<style>
+			#loader-wrapper {
+				position: fixed;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				background-color: rgba(255, 255, 255, 1);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				z-index: 1000;
+			}
+
+			#loader {
+				border: 10px solid #f3f3f3;
+				border-top: 10px solid #3498db;
+				border-radius: 50%;
+				width: 50px;
+				height: 50px;
+				animation: spin 1s linear infinite;
+			}
+
+			@keyframes spin {
+				0% {
+					transform: rotate(180deg);
+				}
+
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+		</style>
+
+
+		<script defer>
+			document.addEventListener('DOMContentLoaded', function () {
+				var loaderWrapper = document.getElementById('loader-wrapper');
+				var mainContent = document.getElementById('main-content');
+
+				function hideLoader() {
+					loaderWrapper.style.display = 'none';
+					mainContent.style.display = 'block';
+				}
+
+				window.addEventListener('load', hideLoader);
+			});
+		</script>
+
+
+
+	</div>
+
+
+
+
+	<!-- mobile menu area start -->
+	<div id="tp-bottom-menu-sticky" class="tp-mobile-menu d-lg-none" th:fragment="mobile_bottom_menu">
+		<link rel="stylesheet" href="assets/css/main.css">
+		<div class="container">
+			<div class="row row-cols-4">
+				<div class="col">
+					<div class="tp-mobile-item text-center">
+						<a th:href="@{/mainpanel}" class="tp-mobile-item-btn">
+							<i class="bi bi-shop"></i>
+							<span th:text="#{header.wallselle}">Seller</span>
+						</a>
+					</div>
+				</div>
+				<div class="col">
+					<div class="tp-mobile-item text-center">
+						<a th:href="@{/product}" class="tp-mobile-item-btn">
+							<i class="bi bi-clipboard-plus"></i>
+							<span th:text="#{main.dashboardpro}">Products</span>
+						</a>
+					</div>
+				</div>
+				<div class="col">
+					<div class="tp-mobile-item text-center">
+						<a th:href="@{/orderlist}" class="tp-mobile-item-btn">
+							<i class="bi bi-card-list"></i>
+							<span th:text="#{main.dashorder}">Orders</span>
+						</a>
+					</div>
+				</div>
+				<div class="col">
+					<div class="tp-mobile-item text-center">
+						<a th:href="@{/wallet}" class="tp-mobile-item-btn">
+							<i class="bi bi-wallet-fill"></i>
+							<span th:text="#{main.dashwall}">Wallet</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- mobile menu area end -->
+
+	<nav class="sidebar" th:fragment="sidebar">
+		<div class="logo d-flex justify-content-center align-items-center"
+			style="background-color: #30778A;padding: 0px; margin-bottom: 1px;">
+			<a class="large_logo" th:href="@{/mainpanel}">
+				<img src="amazonviewonly/fsast_shop.png" alt="Large Logo">
+			</a>
+			<a class="small_logo" th:href="@{/mainpanel}">
+				<img src="amazonviewonly/fsast_shop.png" width="120" alt="Small Logo">
+			</a>
+			<div class="sidebar_close_icon d-lg-none">
+				<i class="bi bi-x"></i>
+			</div>
+		</div>
+
+		<style>
+			.header_iner {
+				padding: 0px;
+				border-radius: 0px;
+				margin: 0px 0px 0;
+			}
+		</style>
+
+		<ul id="sidebar_menu">
+			<li>
+				<div class="p-3 text-xl-center" style="border-radius: 1px ;background-color: #343A40;">
+					<form th:object="${logoImg}">
+						<img th:if="${logoImg} !=null" style="border-radius: 50%;"
+							th:src="@{/shoplogo/{imageName}(imageName=${logoImg.shopLogo})}" width="70" />
+						<img th:if="${logoImg} ==null" th:src="@{/img/contact.png}" width="70">
+					</form>
+					<h5 class="mt-2" style="color: white;font-size: 16px;" th:text="${username}"></h5>
+				</div>
+			</li>
+			<li>
+				<a th:href="@{/mainpanel}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="las la-home aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span th:text="#{main.dashboard}">Dashboard </span>
+					</div>
+				</a>
+			</li>
+
+			<li>
+				<a th:href="@{/orderlist}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="las la-money-bill aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span th:text="#{main.dashorder}">Orders</span>
+					</div>
+				</a>
+			</li>
+
+			<li>
+				<a th:href="@{/financial}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="las la-history aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span th:text="#{main.statement}">Financial
+							Statements</span>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a th:href="@{/refund}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="las la-backward aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span th:text="#{main.refunddash}">Received Refund
+							Request</span>
+					</div>
+				</a>
+			</li>
+
+			<li>
+				<a th:href="@{/product}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="custom-icon-product aiz-side-nav-icon lab la-sketch"></i>
+					</div>
+					<div class="nav_title">
+						<span th:text="#{main.dashboardpro}">Products</span>
+					</div>
+				</a>
+			</li>
+
+			<li>
+				<a th:href="@{/product_reviews}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="custom-icon-review aiz-side-nav-icon las la-star-half-alt"></i>
+					</div>
+					<div class="nav_title">
+						<span th:text="#{main.review}">Product Reviews</span>
+					</div>
+				</a>
+			</li>
+
+			<li>
+				<a th:href="@{/shopsetting}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="custom-icon-product las la-cog aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span th:text="#{main.dashsetting}">Shop Setting</span>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a th:href="@{/wallet}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="custom-icon-product las la-dollar-sign aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span th:text="#{main.dashwall}">My Wallet</span>
+					</div>
+				</a>
+			</li>
+			<!--<li>
+				<a th:href="@{/classified}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="custom-icon-product lab la-sketch aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span th:text="#{main.classified}">Classified Products</span>
+					</div>
+				</a>
+			</li>-->
+			<li>
+				<a th:href="@{/manageprofile}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="custom-icon-product las la-user aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span th:text="#{main.manageprofile}">ManageProfile</span>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a th:href="@{/login}" aria-expanded="false">
+					<div class="nav_icon_small">
+						<i class="custom-icon-product las la-user aiz-side-nav-icon"></i>
+					</div>
+					<div class="nav_title">
+						<span th:text="#{main.userlogin}">User Login</span>
+					</div>
+				</a>
+			</li>
+		</ul>
+	</nav>
+
+	<section class="main_content dashboard_part large_header_bg" style="background-color: #e6f1f5;">
+		<div class="container-fluid g-0" th:fragment="navbar">
+			<div class="row" style="--bs-gutter-x: 0;">
+				<div class="col-lg-12 p-0">
+					<div class="header_iner d-flex justify-content-between align-items-center"
+						style="background-color: #30778A;">
+						<div class="sidebar_icon d-lg-none">
+							<i class="bi bi-list" style="color: white;"></i>
+						</div>
+						<label class="form-label switch_toggle d-none d-lg-block" for="checkbox">
+							<input type="checkbox" id="checkbox">
+							<div class="slider round open_miniSide" style="border-color:white;"></div>
+						</label>
+						<div class="header_right d-flex justify-content-between align-items-center">
+
+
+							<style>
+								.drop_down {
+									display: flex;
+									flex-direction: row;
+								}
+
+								.drop {
+									background-color: #30778A;
+									color: black;
+									border: none;
+								}
+							</style>
+							<div class="text-center  d-flex align-items-center m-4 p-1">
+								<li class="list-inline-item " id="lang-change"
+									style="border: 1px solid #e2e8f0;border-radius: 4px;">
+									<div th:switch="${#locale.language}" class="drop_down">
+										<p th:case="en" class="mb-1"><img th:src="@{img/usa.jpg}" alt="English"
+												width="25" height="15">
+										</p>
+										<p th:case="zh" class="mb-1"><img th:src="@{img/chinese.jpg}" alt="Chinese"
+												width="25" height="15">
+										</p>
+										<p th:case="vi" class="mb-1"><img src="img/vietnam.jpg" alt="Vietnam" width="25"
+												height="15">
+										</p>
+										<p th:case="*">English <img th:src="@{img/usa.jpg}" alt="English" width="25"
+												height="15"></p>
+										<select id="language-select" class="drop" style="color: white;">
+											<option value="en" style="color: white;">English
+											</option>
+											<option value="zh" style="color: white;">中文
+											</option>
+											<option value="vi" style="color: white;">Tiếng
+												Việt</option>
+										</select>
+									</div>
+								</li>
+							</div>
+
+							<div class="seprator" style="color: white;">|</div>
+							<div class="text-center  d-flex align-items-center m-4">
+								<form th:action="@{/signoutbyshop}" method="post">
+									<input type="hidden" style="color: white; text-decoration: none;" value="0"
+										name="signout">
+									<button type="submit" id="signout"
+										class="text-reset d-inline-block opacity-60 py-2"><span
+											th:text="#{header.logout}" style="color: white;">Logout</span></button>
+								</form>
+							</div>
+							<style>
+								#signout {
+									border: none;
+									text-align: center;
+									text-decoration: none;
+									font-size: 14px;
+									cursor: pointer;
+									background-color: #30778A;
+								}
+							</style>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<style>
+			@media (max-width: 767px) {
+				.show-desktop {
+					display: none;
+				}
+			}
+
+			.page-header {
+				background-color: #d1ecf1;
+				border: 1px solid #bee5eb;
+				padding: 0.75rem 1.25rem 0.4rem;
+				border-radius: 0.25rem
+			}
+		</style>
+
+
+
+		<!--mobile screen-->
+		<div class="main_content_iner overly_inner" style="background-color: #e6f1f5;">
+			<div class="container-fluid p-0 ">
+				<div class="row">
+					<div class="col-12">
+						<div class="page_title_box d-flex flex-wrap align-items-center justify-content-between">
+							<div class="page_title_left">
+								<h3 class="f_s_25 f_w_700 dark_text" th:text="#{dashboard.dash}">Dashboard</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row ">
+					<div class="col-xl-4">
+						<div class="white_card card_height_100 mb_30 social_media_card"
+							style=" background-color: #30778a;">
+							<div class="white_card_header">
+								<div class="main-title">
+									<h3 class="m-0" th:text="#{main.sellerstatuic}" style="color: white;">Seller
+										Statistics</h3>
+									<span th:text="#{main.aboutyoursellerstatuic}" style="color: white;">About Your
+										Statistics</span>
+								</div>
+							</div>
+							<div class="media_thumb ml_25">
+								<img src="img/media.svg" alt>
+							</div>
+							<div class="media_card_body">
+								<div class="media_card_list">
+									<div class="single_media_card" style="background-color: #e3ae42;">
+										<span th:text="#{main.mainproduct}" style="color: white;">Products</span>
+										<h3 th:text="${countOfProduct}" style="color: white;">35.6 K</h3>
+									</div>
+									<div class="single_media_card" style="background-color: #2dcc9b;">
+										<span th:text="#{main.profit}" style="color: white;">Total profit</span>
+										<h3 th:if="${sumOfEstimatedProfitPrice} != null"
+											th:text="'$'+${sumOfEstimatedProfitPrice}" style="color: white;">35.6 K</h3>
+										<h3 th:if="${sumOfEstimatedProfitPrice} == null" style="color: white;">$0.00
+										</h3>
+									</div>
+									<div class="single_media_card" style="background-color: #e33b4b;">
+										<span th:text="#{main.totsale}" style="color: white;">Total sale</span>
+										<h3 th:if="${sumOfProductPriceSale} != null"
+											th:text="'$'+ ${sumOfProductPriceSale}" style="color: white;">35.6 K</h3>
+										<h3 th:if="${sumOfProductPriceSale} == null" style="color: white;">$0.00</h3>
+									</div>
+									<div class="single_media_card" style="background-color: #3490eb;">
+										<span th:text="#{main.totolreturnproduft}" style="color: white;">Total
+											Return Product</span>
+										<h3 th:text="${countOfReturnProduct}" style="color: white;">35.6 K</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-4">
+						<div class="white_card card_height_100 mb_30">
+							<div class="white_card_header">
+								<div class="box_header m-0">
+									<div class="main-title">
+										<h3 class="m-0" th:text="#{main.visitorstatics}">
+											Visitor statistics</h3>
+										<!--<span>15654 Visaitors</span>-->
+									</div>
+									<div class="float-lg-right float-none common_tab_btn justify-content-end">
+										<ul class="nav">
+											<li class="nav-item">
+												<a class="nav-link active" href="#">Day</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" href="#">Week</a>
+											</li>
+
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="white_card_body">
+								<div id="chart-currently"></div>
+								<div class="monthly_plan_wraper">
+									<div class="single_plan d-flex align-items-center justify-content-between">
+										<div class="plan_left d-flex align-items-center">
+											<div class="thumb">
+												<img src="img/crome.png" alt>
+											</div>
+											<div>
+												<h5 th:text="#{main.todayvisitors}">Today
+													Visitors</h5>
+												<!--<span>Today</span>-->
+											</div>
+										</div>
+										<span class="brouser_btn" id="dayVisitorCount">0</span>
+									</div>
+									<div class="single_plan d-flex align-items-center justify-content-between">
+										<div class="plan_left d-flex align-items-center">
+											<div class="thumb">
+												<img src="img/safari.png" alt>
+											</div>
+											<div>
+												<h5 th:text="#{main.last7days}">Last 7 Days
+													Visitors</h5>
+												<!--<span>Today</span>-->
+											</div>
+										</div>
+										<span class="brouser_btn" id="weekVisitorCount">0</span>
+									</div>
+
+									<div class="single_plan d-flex align-items-center justify-content-between">
+										<div class="plan_left d-flex align-items-center">
+											<div class="thumb">
+												<img src="img/OBJECTS.png" alt>
+											</div>
+											<div>
+												<h5 th:text="#{main.last30days}">Last 30
+													Days
+													Visitors</h5>
+												<!--<span>Today</span>-->
+											</div>
+										</div>
+										<span class="brouser_btn" id="monthVisitorCount">0</span>
+									</div>
+
+
+								</div>
+								<hr>
+								<div class=" text-center">
+									<span>
+										<img src="/img/verifyImg/verified.png" alt="Denim Jeans">
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-4 ">
+						<div class="white_card card_height_100 mb_30 sales_card_wrapper"
+							style="background-image: url('vendors/img/plane_thumb.svg');">
+							<div class=" white_card_header d-flex justify-content-end">
+								<h3 class="export_btn" th:text="#{main.orderstai11}">Order
+									Statistic</h3>
+							</div>
+							<div class="sales_card_body">
+								<div class="single_sales">
+									<span th:text="#{main.totorder}">Total orders</span>
+									<h3 th:text="${totalSuccessfulOrders}">6550</h3>
+								</div>
+								<div class="single_sales">
+									<span th:text="#{main.pendorder}">Pending orders</span>
+									<h3 th:text="${countOfPendingOrder}">5646,454</h3>
+								</div>
+								<div class="single_sales">
+									<span th:text="#{main.cancelorder}">Cancelled
+										orders</span>
+									<h3 th:text="${countOfCancelOrder}">$650</h3>
+								</div>
+								<div class="single_sales">
+									<span th:text="#{main.successorder}">Successful
+										orders</span>
+									<h3 th:text="${totalSuccessfulOrders}">$56</h3>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-12" style="display: none;">
+						<div class="white_card card_height_100 mb_30 ">
+							<div class="row">
+								<div class="col-lg-9">
+									<div class="white_card_header">
+										<div class="box_header m-0">
+											<div class="main-title">
+												<h3 class="m-0">Running Campain</h3>
+												<span>Overview</span>
+											</div>
+										</div>
+									</div>
+									<div class="white_card_body QA_section">
+										<div class="QA_table ">
+
+											<table class="table lms_table_active2 p-0">
+												<thead>
+													<tr>
+														<th scope="col">Campain</th>
+														<th scope="col">Start Time</th>
+														<th scope="col">Company</th>
+														<th scope="col">Status</th>
+														<th scope="col">Action</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>
+															<div class="customer d-flex align-items-center">
+																<div class="social_media">
+																	<i class="fab fa-facebook-f"></i>
+																</div>
+																<div class="ml_18">
+																	<h3 class="f_s_18 f_w_900 mb-0">
+																		Facebook Promotion
+																	</h3>
+																	<span class="f_s_12 f_w_700 text_color_8">Unique
+																		Watch</span>
+																</div>
+															</div>
+														</td>
+														<td>
+															<div>
+																<h3 class="f_s_18 f_w_900 mb-0">
+																	08:32</h3>
+																<span
+																	class="f_s_12 f_w_700 color_text_3">12.12.2022</span>
+															</div>
+														</td>
+														<td>
+															<div>
+																<h3 class="f_s_18 f_w_800 mb-0">
+																	H&G Fashion</h3>
+																<span class="f_s_12 f_w_500 color_text_3">Fashion
+																	and
+																	design</span>
+															</div>
+														</td>
+														<td class="f_s_14 f_w_400 color_text_3">
+															<a href="#" class="badge_active">Active</a>
+														</td>
+														<td>
+															<div class="action_btns d-flex">
+																<a href="#" class="action_btn mr_10">
+																	<i class="far fa-edit"></i>
+																</a>
+																<a href="#" class="action_btn"> <i
+																		class="fas fa-trash"></i>
+																</a>
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="customer d-flex align-items-center">
+																<div class="social_media insta_bg">
+																	<i class="fab fa-instagram"></i>
+																</div>
+																<div class="ml_18">
+																	<h3 class="f_s_18 f_w_900 mb-0">
+																		Instagram</h3>
+																	<span class="f_s_12 f_w_700 text_color_9">Unique
+																		Watch</span>
+																</div>
+															</div>
+														</td>
+														<td>
+															<div>
+																<h3 class="f_s_18 f_w_900 mb-0">
+																	08:32</h3>
+																<span
+																	class="f_s_12 f_w_700 color_text_3">12.12.2022</span>
+															</div>
+														</td>
+														<td>
+															<div>
+																<h3 class="f_s_18 f_w_800 mb-0">
+																	H&G Fashion</h3>
+																<span class="f_s_12 f_w_500 color_text_3">Fashion
+																	and
+																	design</span>
+															</div>
+														</td>
+														<td class="f_s_14 f_w_400 color_text_3">
+															<a href="#" class="badge_active2">Posed</a>
+														</td>
+														<td>
+															<div class="action_btns d-flex">
+																<a href="#" class="action_btn mr_10">
+																	<i class="far fa-edit"></i>
+																</a>
+																<a href="#" class="action_btn"> <i
+																		class="fas fa-trash"></i>
+																</a>
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="customer d-flex align-items-center">
+																<div class="social_media twitter_bg">
+																	<i class="fab fa-twitter"></i>
+																</div>
+																<div class="ml_18">
+																	<h3 class="f_s_18 f_w_900 mb-0">
+																		Twitter</h3>
+																	<span class="f_s_12 f_w_700 text_color_10">Unique
+																		Watch</span>
+																</div>
+															</div>
+														</td>
+														<td>
+															<div>
+																<h3 class="f_s_18 f_w_900 mb-0">
+																	08:32</h3>
+																<span
+																	class="f_s_12 f_w_700 color_text_3">12.12.2022</span>
+															</div>
+														</td>
+														<td>
+															<div>
+																<h3 class="f_s_18 f_w_800 mb-0">
+																	H&G Fashion</h3>
+																<span class="f_s_12 f_w_500 color_text_3">Fashion
+																	and
+																	design</span>
+															</div>
+														</td>
+														<td class="f_s_14 f_w_400 color_text_3">
+															<a href="#" class="badge_active3">Closed</a>
+														</td>
+														<td>
+															<div class="action_btns d-flex">
+																<a href="#" class="action_btn mr_10">
+																	<i class="far fa-edit"></i>
+																</a>
+																<a href="#" class="action_btn"> <i
+																		class="fas fa-trash"></i>
+																</a>
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="customer d-flex align-items-center">
+																<div class="social_media youtube_bg">
+																	<i class="fab fa-youtube"></i>
+																</div>
+																<div class="ml_18">
+																	<h3 class="f_s_18 f_w_900 mb-0">
+																		Youtube</h3>
+																	<span class="f_s_12 f_w_700 text_color_11">Summer
+																		Campain</span>
+																</div>
+															</div>
+														</td>
+														<td>
+															<div>
+																<h3 class="f_s_18 f_w_900 mb-0">
+																	08:32</h3>
+																<span
+																	class="f_s_12 f_w_700 color_text_3">12.12.2022</span>
+															</div>
+														</td>
+														<td>
+															<div>
+																<h3 class="f_s_18 f_w_800 mb-0">
+																	H&G Fashion</h3>
+																<span class="f_s_12 f_w_500 color_text_3">Fashion
+																	and
+																	design</span>
+															</div>
+														</td>
+														<td class="f_s_14 f_w_400 color_text_3">
+															<a href="#" class="badge_active4">End
+																soon</a>
+														</td>
+														<td>
+															<div class="action_btns d-flex">
+																<a href="#" class="action_btn mr_10">
+																	<i class="far fa-edit"></i>
+																</a>
+																<a href="#" class="action_btn"> <i
+																		class="fas fa-trash"></i>
+																</a>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-3 white_card_body pt_25">
+									<div class="project_complete">
+										<div class="single_pro d-flex">
+											<div class="probox"></div>
+											<div class="box_content">
+												<h4>5685</h4>
+												<span>Project completed</span>
+											</div>
+										</div>
+										<div class="single_pro d-flex">
+											<div class="probox blue_box"></div>
+											<div class="box_content">
+												<h4 class="bluish_text">5685</h4>
+												<span class="grayis_text">Project
+													completed</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="footer_part" th:fragment="footer" style="background-color: #e6f1f5;">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="footer_iner text-center" style="background-color: #e6f1f5;">
+							<p>© 2023 All Rights Reserved<a th:href="@{/mainpanel}" style="color: #30778A;">
+									FSAST-Shop</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div class="CHAT_MESSAGE_POPUPBOX">
+		<div class="CHAT_POPUP_HEADER">
+			<div class="MSEESAGE_CHATBOX_CLOSE">
+				<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M7.09939 5.98831L11.772 10.661C12.076 10.965 12.076 11.4564 11.772 11.7603C11.468 12.0643 10.9766 12.0643 10.6726 11.7603L5.99994 7.08762L1.32737 11.7603C1.02329 12.0643 0.532002 12.0643 0.228062 11.7603C-0.0760207 11.4564 -0.0760207 10.965 0.228062 10.661L4.90063 5.98831L0.228062 1.3156C-0.0760207 1.01166 -0.0760207 0.520226 0.228062 0.216286C0.379534 0.0646715 0.578697 -0.0114918 0.777717 -0.0114918C0.976738 -0.0114918 1.17576 0.0646715 1.32737 0.216286L5.99994 4.889L10.6726 0.216286C10.8243 0.0646715 11.0233 -0.0114918 11.2223 -0.0114918C11.4213 -0.0114918 11.6203 0.0646715 11.772 0.216286C12.076 0.520226 12.076 1.01166 11.772 1.3156L7.09939 5.98831Z"
+						fill="white" />
+				</svg>
+			</div>
+			<h3>Chat with us</h3>
+			<div class="Chat_Listed_member">
+				<ul>
+					<li>
+						<a href="#">
+							<div class="member_thumb">
+								<img src="img/staf/1.png" alt>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<div class="member_thumb">
+								<img src="img/staf/2.png" alt>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<div class="member_thumb">
+								<img src="img/staf/3.png" alt>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<div class="member_thumb">
+								<img src="img/staf/4.png" alt>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<div class="member_thumb">
+								<img src="img/staf/5.png" alt>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<div class="member_thumb">
+								<div class="more_member_count">
+									<span>90+</span>
+								</div>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="CHAT_POPUP_BODY">
+			<p class="mesaged_send_date">
+				Sunday, 12 January
+			</p>
+			<div class="CHATING_SENDER">
+				<div class="SMS_thumb">
+					<img src="img/staf/1.png" alt>
+				</div>
+				<div class="SEND_SMS_VIEW">
+					<P>Hi! Welcome .
+						How can I help you?</P>
+				</div>
+			</div>
+			<div class="CHATING_SENDER CHATING_RECEIVEr">
+				<div class="SEND_SMS_VIEW">
+					<P>Hello</P>
+				</div>
+				<div class="SMS_thumb">
+					<img src="img/staf/1.png" alt>
+				</div>
+			</div>
+		</div>
+		<div class="CHAT_POPUP_BOTTOM" style="border: 1px solid red;">
+			<div class="chat_input_box d-flex align-items-center">
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Write your message"
+						aria-label="Recipient's username" aria-describedby="basic-addon2">
+					<div class="input-group-append">
+						<button class="btn " type="button">
+							<svg width="22" height="22" viewBox="0 0 22 22" fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M18.7821 3.21895C14.4908 -1.07281 7.50882 -1.07281 3.2183 3.21792C-1.07304 7.50864 -1.07263 14.4908 3.21872 18.7824C7.50882 23.0729 14.4908 23.0729 18.7817 18.7815C23.0726 14.4908 23.0724 7.50906 18.7821 3.21895ZM17.5813 17.5815C13.9525 21.2103 8.04773 21.2108 4.41871 17.5819C0.78907 13.9525 0.789485 8.04714 4.41871 4.41832C8.04752 0.789719 13.9521 0.789304 17.5817 4.41874C21.2105 8.04755 21.2101 13.9529 17.5813 17.5815ZM6.89503 8.02162C6.89503 7.31138 7.47107 6.73534 8.18131 6.73534C8.89135 6.73534 9.46739 7.31117 9.46739 8.02162C9.46739 8.73228 8.89135 9.30811 8.18131 9.30811C7.47107 9.30811 6.89503 8.73228 6.89503 8.02162ZM12.7274 8.02162C12.7274 7.31138 13.3038 6.73534 14.0141 6.73534C14.7241 6.73534 15.3002 7.31117 15.3002 8.02162C15.3002 8.73228 14.7243 9.30811 14.0141 9.30811C13.3038 9.30811 12.7274 8.73228 12.7274 8.02162ZM15.7683 13.2898C14.9712 15.1332 13.1043 16.3243 11.0126 16.3243C8.8758 16.3243 6.99792 15.1272 6.22834 13.2744C6.09642 12.9573 6.24681 12.593 6.56438 12.4611C6.64238 12.4289 6.72328 12.4136 6.80293 12.4136C7.04687 12.4136 7.27836 12.5577 7.37772 12.7973C7.95376 14.1842 9.38048 15.0799 11.0126 15.0799C12.6077 15.0799 14.0261 14.1836 14.626 12.7959C14.7625 12.4804 15.1288 12.335 15.4441 12.4717C15.7594 12.6084 15.9048 12.9745 15.7683 13.2898Z"
+									fill="#707DB7" />
+							</svg>
+						</button>
+						<button class="btn" type="button">
+							<svg width="22" height="22" viewBox="0 0 22 22" fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M11 0.289062C4.92455 0.289062 0 5.08402 0 10.9996C0 16.9152 4.92455 21.7101 11 21.7101C17.0755 21.7101 22 16.9145 22 10.9996C22 5.08472 17.0755 0.289062 11 0.289062ZM11 20.3713C5.68423 20.3713 1.375 16.1755 1.375 10.9996C1.375 5.82371 5.68423 1.62788 11 1.62788C16.3158 1.62788 20.625 5.82371 20.625 10.9996C20.625 16.1755 16.3158 20.3713 11 20.3713ZM15.125 10.3302H11.6875V6.98314C11.6875 6.61363 11.3795 6.31373 11 6.31373C10.6205 6.31373 10.3125 6.61363 10.3125 6.98314V10.3302H6.875C6.4955 10.3302 6.1875 10.6301 6.1875 10.9996C6.1875 11.3691 6.4955 11.669 6.875 11.669H10.3125V15.016C10.3125 15.3855 10.6205 15.6854 11 15.6854C11.3795 15.6854 11.6875 15.3855 11.6875 15.016V11.669H15.125C15.5045 11.669 15.8125 11.3691 15.8125 10.9996C15.8125 10.6301 15.5045 10.3302 15.125 10.3302Z"
+									fill="#707DB7" />
+							</svg>
+							<input type="file">
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--<div id="back-top" style="display: none;">
+		<a title="Go to Top" href="#">
+			<i class="ti-angle-up"></i>
+		</a>
+	</div>-->
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			document.getElementById('language-select').addEventListener('change', function () {
+				console.log('Language selected:', this.value);
+				window.location.href = '?lang=' + this.value;
+			});
+		});
+		$(document).ready(function () {
+			var currentLang = $('html').attr('lang');
+			$('#language-select').val(currentLang);
+		});
+	</script>
+
+	<script>
+		$(document).ready(function () {
+			let currentDate = new Date().toDateString();
+			let storedDate = localStorage.getItem('date');
+			let visitorCount;
+
+			if (storedDate === currentDate) {
+				visitorCount = localStorage.getItem('dayVisitorCount') ? parseInt(localStorage.getItem('dayVisitorCount')) : 0;
+			} else {
+				visitorCount = 0;
+				localStorage.setItem('date', currentDate);
+			}
+
+			setInterval(function () {
+				visitorCount++;
+				localStorage.setItem('dayVisitorCount', visitorCount);
+				document.getElementById('dayVisitorCount').textContent = visitorCount;
+			}, 1800000); // Update every 30 minutes
+		});
+	</script>
+
+	<script>
+		$(document).ready(function () {
+			let currentMonth = new Date().getMonth();
+			let storedMonth = localStorage.getItem('month');
+			let visitorCount;
+
+			if (storedMonth === currentMonth) {
+				visitorCount = localStorage.getItem('monthVisitorCount') ? parseInt(localStorage.getItem('monthVisitorCount')) : 0;
+			} else {
+				visitorCount = 0;
+				localStorage.setItem('month', currentMonth);
+			}
+
+			setInterval(function () {
+				visitorCount++;
+				localStorage.setItem('monthVisitorCount', visitorCount);
+				document.getElementById('monthVisitorCount').textContent = visitorCount;
+			}, 1800000); // Update every 30 minutes
+		});
+	</script>
+
+	<script>
+		$(document).ready(function () {
+			let currentWeek = Math.floor(new Date().getTime() / (1000 * 60 * 60 * 24 * 7));
+			let storedWeek = localStorage.getItem('week');
+			let visitorCount;
+
+			if (storedWeek === currentWeek) {
+				visitorCount = localStorage.getItem('weekVisitorCount') ? parseInt(localStorage.getItem('weekVisitorCount')) : 0;
+			} else {
+				visitorCount = 0;
+				localStorage.setItem('week', currentWeek);
+			}
+
+			setInterval(function () {
+				visitorCount++;
+				localStorage.setItem('weekVisitorCount', visitorCount);
+				document.getElementById('weekVisitorCount').textContent = visitorCount;
+			}, 1800000); // Update every 30 minutes
+		});
+	</script>
+
+	<script src="vendors/datatable/js/jquery1-3.4.1.min.js"></script>
+	<script src="vendors/datatable/js/popper1.min.js"></script>
+	<script src="vendors/datatable/js/bootstrap1.min.js"></script>
+	<script src="vendors/datatable/js/metisMenu.js"></script>
+	<script src="vendors/datatable/js/jquery.dataTables.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.responsive.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.buttons.min.js"></script>
+	<script src="vendors/datatable/js/buttons.flash.min.js"></script>
+	<script src="vendors/datatable/js/jszip.min.js"></script>
+	<script src="vendors/datatable/js/pdfmake.min.js"></script>
+	<script src="vendors/datatable/js/vfs_fonts.js"></script>
+	<script src="vendors/datatable/js/buttons.html5.min.js"></script>
+	<script src="vendors/datatable/js/buttons.print.min.js"></script>
+	<script src="vendors/datatable/js/perfect-scrollbar.min.js"></script>
+	<script src="vendors/datatable/js/scrollable-custom.js"></script>
+	<script src="vendors/datatable/js/custom.js"></script>
+</body>
+
+</html>

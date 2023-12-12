@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>FSAST - Admin Panel</title>
+	<!-- plugins:css -->
+	<link rel="stylesheet" href="../../dashboard/assets/vendors/mdi/css/materialdesignicons.min.css">
+	<link rel="stylesheet" href="../../dashboard/assets/vendors/css/vendor.bundle.base.css">
+
+	<link rel="stylesheet" href="../../dashboard/assets/css/style.css">
+
+
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<style>
+		.dropbtn {
+			background-color: #212529;
+			color: white;
+			font-size: 16px;
+			border: none;
+			cursor: pointer;
+			font-weight: bold;
+		}
+
+		.dropdown {
+			position: relative;
+			display: inline-block;
+		}
+
+
+		.drop_down {
+			display: flex;
+			flex-direction: row;
+		}
+
+		.drop {
+			background-color: #fafafa;
+			color: black;
+			border: none;
+		}
+	</style>
+
+	<style>
+		#myForm,
+		#myForm1 {
+			left: 40%;
+			top: 18%;
+			width: 26%;
+
+		}
+
+		/* The popup form - hidden by default */
+		.form-popup {
+			display: none;
+			position: absolute;
+			top: auto;
+			border: 3px solid #f1f1f1;
+			z-index: 9;
+		}
+
+		/* Add styles to the form container */
+		.form-container {
+			padding: 10px;
+			background-color: white;
+		}
+
+		/* Full-width input fields */
+		.form-container input[type=text],
+		.form-container input[type=password] {
+			border: none;
+			background: #f1f1f1;
+
+		}
+
+		/* When the inputs get focus, do something */
+		.form-container input[type=text]:focus,
+		.form-container input[type=password]:focus {
+			background-color: #ddd;
+			outline: none;
+			margin: 0 0 0 20px;
+		}
+
+		/* Set a style for the submit/login button */
+		.form-container .btn {
+			background-color: goldenrod;
+			color: white;
+
+			border: none;
+			cursor: pointer;
+
+			margin-bottom: 10px;
+
+		}
+
+		/* Add a red background color to the cancel button */
+		.form-container .cancel {
+			background-color: goldenrod;
+		}
+
+		.catid {
+			margin-right: 30px;
+		}
+
+		.editbutton {
+			padding: 5px 15px 5px 15px;
+			border-radius: 5px;
+			border-color: orange;
+			background-color: orange;
+			color: white;
+		}
+
+		.editbutton:hover {
+			color: black;
+		}
+	</style>
+
+	<style>
+		.add-btn {
+			background-color: #ffab00;
+			border: none;
+			color: white;
+			padding: 11px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 14px;
+			margin: 4px 2px;
+			cursor: pointer;
+			border-radius: 8px;
+		}
+
+		.add-btn:hover {
+			background-color: #ffab00;
+		}
+	</style>
+	<style>
+		.product_image {
+			transition: transform 0.5s;
+			cursor: pointer;
+		}
+
+		.product_image:hover {
+			transform: scale(2.5);
+		}
+	</style>
+</head>
+
+<body>
+	<style>
+		.navbar .navbar-brand-wrapper .navbar-brand img {
+			height: 70px;
+			vertical-align: middle;
+		}
+	</style>
+	<div class="container-scroller">
+		<div th:replace="dashboard/dashboard::navbar">...</div>
+		<div class="container-fluid page-body-wrapper">
+			<div th:replace="dashboard/dashboard::sidebar">...</div>
+
+			<!-- partial -->
+			<div class="main-panel">
+
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3 class="page-title"> Store Management </h3>
+						<div class="search-field d-none d-md-block">
+							<form class="d-flex align-items-center h-100" form th:action="@{/searchstore}" method="GET">
+								<div class="input-group" style="border: 1px solid grey; border-radius: 5px;">
+
+									<input type="text" class="form-control  border-0" name="query"
+										placeholder="Store name or Phone no.">
+									<div class="input-group-prepend">
+										<button type="submit" style="border: none;"><i
+												class="input-group-text border-0 mdi mdi-magnify"
+												style="border-color: darkgrey;"></i></button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="row">
+
+
+						<div class="col-lg-12 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title" th:text="#{dashboard.storemana}">Store Management</h4>
+									<!--<button onclick="openForm()" class="add-btn">Add</button>-->
+									<div class="table-responsive">
+										<table class="table" id="serialNumber">
+											<thead>
+												<tr>
+													<th scope="col">#</th>
+													<th scope="col" th:text="#{dashboard.ordestoreid}">Store id</th>
+													<th scope="col" th:text="#{dashboard.orderstorename}">Store Name
+													</th>
+													<th scope="col" th:text="#{dashboard.orderphoe}">Phone No.</th>
+													<th scope="col" th:text="#{dashboard.orderidshopemail}">Shop email
+													</th>
+													<th scope="col" th:text="#{dashboard.ordeshoplo}">Store Logo</th>
+													<!--<th scope="col" th:text="#{dashboard.orderrmar}">Remarks</th>-->
+													<th scope="col" th:text="#{dashboard.orderusnehj}">user name</th>
+													<th scope="col" th:text="#{dashboard.orderuserid}">user id</th>
+													<!--	<th scope="col">Date</th>-->
+													<th scope="col" th:text="#{dashboard.orderdoc}">Document</th>
+													<th scope="col" th:text="#{dashboard.orderstatt}">Status</th>
+													<th scope="col" th:text="#{dashboard.checkst}">select checkbox
+														status
+													</th>
+													<th scope="col" th:text="#{dashboard.orderoperate}">Operate</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="verify : ${shopVerificationList}">
+													<td></td>
+													<td th:text="${verify.shopDetail.id}"></td>
+													<td th:text="${verify.shopDetail.shopName}"></td>
+													<td th:text="${verify.shopDetail.shopPhoneNo}"></td>
+													<td th:text="${verify.shopDetail.shopEmail}"></td>
+													<!--<td><img th:src="@{${verify.shopDetail.shopLogo}}" class="product_image"></td>-->
+													<td><img th:src="@{/shoplogo/{imageName}(imageName=${verify.shopDetail.shopLogo})}"
+															class="product_image"></td>
+													<!--<td style=" white-space: normal;" th:text="${verify.shopDetail.introduction}"></td>-->
+													<td th:text="${verify.user.email}"></td>
+													<td th:text="${verify.user.id}"></td>
+													<!--<td th:text="${#dates.format(verify.date, 'dd-MMM-yyyy')}"></td>-->
+													<td>
+														<a id="viewFile" target="_blank"
+															th:if="${verify.validIdDoc!='default' and verify.validIdDoc!=null }"
+															th:href="@{'/store_management/download/' + ${verify.id}}"
+															style="text-decoration: none;">
+															<!--<span th:text="${verify.validIdDoc}"></span>-->
+															view
+														</a>
+													</td>
+													<span th:if="${verify.status}=='N'">
+
+														<td style="max-width: 20px">
+															<input type="checkbox" name="id[]"
+																th:value="${verify.id}" />
+														</td>
+													</span>
+													<td th:if="${verify.status}=='Y'">
+														<input type="checkbox" name="id[]" th:value="${verify.id}"
+															disabled />
+													</td>
+
+
+													<span th:if="${verify.status}=='Y'">
+
+														<td>
+															<div style="display: flex; justify-content:flex-end;"
+																class="col-sm-12 ">
+																<button type="submit" class="btn" style="color: green;"
+																	name="verifyId"
+																	th:value="${verify.id}">Verified</button>
+															</div>
+														</td>
+
+													</span>
+
+													<span th:if="${verify.status}=='N'">
+
+														<td>
+															<div style="display: flex; justify-content:flex-end;"
+																class="col-sm-12 ">
+																<button type="submit" class="btn" style="color: red;"
+																	onclick="return  SelectCheckbox()"
+																	th:value="${verify.id}">Un-Verified</button>
+															</div>
+														</td>
+
+													</span>
+													<td><button
+															th:attr="onclick='openForm(\'' + ${verify.id} + '\', \'' + ${verify.user.email} + '\', \'' + ${verify.date} + '\', \'' + ${verify.shopDetail.shopName} + '\', \'' + ${verify.shopDetail.shopPhoneNo} + '\', \'' + ${verify.shopDetail.shopEmail} + '\', \'' + ${verify.shopDetail.introduction} + '\')'"
+															class="editbutton" th:text="#{dashboard.edit}">Edit</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<style>
+								.form-label {
+									font-weight: bold;
+								}
+							</style>
+							<div class="form-popup" id="myForm">
+								<form th:action="@{/updateStoreMangement}" method="post" class="form-container">
+									<div class="modal-footer justify-content-between bg-light"
+										th:text="#{dashboard.storemana}">
+										Edit Store Mangement
+									</div>
+									<input type="hidden" class="form-control" name="verifyId" id="verifyId" readonly>
+									<label class="form-label mt-2 mb-2"
+										th:text="#{dashboard.orderusnehj}">username</label>
+									<input type="text" class="form-control" name="username" id="username" readonly>
+									<label class="form-label mt-2  mb-2" th:text="#{dashboard.adddate}">Date</label>
+									<input type="text" class="form-control" name="date" id="date" readonly>
+									<label class="form-label mt-2  mb-2" th:text="#{dashboard.orderstorename}">Store
+										Name</label>
+									<input type="text" class="form-control" name="storeName" id="storeName">
+									<label class="form-label mt-2  mb-2" th:text="#{dashboard.orderphoe}">Store Phone
+										no</label>
+									<input type="text" class="form-control" name="phoneno" id="phoneno">
+									<label class="form-label mt-2  mb-2" th:text="#{dashboard.orderidshopemail}">Store
+										email</label>
+									<input type="text" class="form-control" name="storeEmail" id="storeEmail">
+									<label class="form-label mt-2  mb-2"
+										th:text="#{dashboard.orderrmar}">Remarks</label>
+									<input type="text" class="form-control" name="storeDescription" style=" white-space: normal;"
+										id="storeDescription">
+									<br>
+									<div class="modal-footer justify-content-between">
+										<button type="button" class="btn cancel" onclick="closeForm()"
+											th:text="#{dashbored.close}">Close</button>
+										<button type="submit" class="btn" th:text="#{dashbored.save}">Save</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div th:replace="dashboard/dashboard::footer">...</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		function openForm(id, email, date, shopName, shopPhoneNo, shopEmail, introduction) {
+
+			// pre-fill the form with the id and name of the category
+			document.getElementById("verifyId").value = id;
+			document.getElementById("username").value = email;
+			document.getElementById("date").value = date;
+			document.getElementById("storeName").value = shopName;
+			document.getElementById("phoneno").value = shopPhoneNo;
+			document.getElementById("storeEmail").value = shopEmail;
+			document.getElementById("storeDescription").value = introduction;
+
+			// open the popup form
+			document.getElementById("myForm").style.display = "block";
+		}
+
+		function closeForm() {
+			console.log("closeForm called");
+
+			// close the popup form
+			document.getElementById("myForm").style.display = "none";
+		}
+	</script>
+
+	<!--select single checkbox-->
+	<script>
+		function SelectCheckbox() {
+
+			var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+			var checked = false;
+			for (var i = 0; i < checkboxes.length; i++) {
+				if (checkboxes[i].checked) {
+					checked = true;
+					break;
+				}
+			}
+			if (!checked) {
+				swal("Please select the status  checkbox before verify");
+				return false;
+			}
+
+			var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+			var checked = false;
+			for (var i = 0; i < checkboxes.length; i++) {
+				if (checkboxes[i].checked) {
+					checked = true;
+					break;
+				}
+			}
+			if (!checked) {
+				swal("Please select the status  checkbox before verify");
+				return false;
+			}
+
+			// Get all the selected checkboxes
+			var checkboxes = document.querySelectorAll('input[name="id[]"]:checked');
+			var ids = [];
+			for (var i = 0; i < checkboxes.length; i++) {
+				ids.push(checkboxes[i].value);
+			}
+			// Send the selected ids to the server
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '/store_management/verification_status');
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.onload = function () {
+				if (xhr.status === 200) {
+					// Handle successful response
+					swal("Good job!", " congrates !! Verify successfull !!", "success");
+				}
+			};
+			xhr.send(JSON.stringify({ids: ids}));
+			setTimeout(function () {
+				location.reload();
+			}, 2000);
+		}
+	</script>
+
+
+	<script>
+		let table = document.querySelector("#serialNumber");
+		let rows = table.querySelectorAll("tbody tr");
+		for (let i = 0; i < rows.length; i++) {
+			let firstCell = rows[i].querySelector("td:first-child");
+			firstCell.textContent = i + 1;
+		}
+	</script>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			document.getElementById('language-select').addEventListener('change', function () {
+				console.log('Language selected:', this.value);
+				window.location.href = '?lang=' + this.value;
+			});
+		});
+		$(document).ready(function () {
+			var currentLang = $('html').attr('lang');
+			$('#language-select').val(currentLang);
+		});
+	</script>
+	<script src="../../dashboard/assets/vendors/js/vendor.bundle.base.js"></script>
+	<script src="../../dashboard/assets/js/off-canvas.js"></script>
+	<script src="../../dashboard/assets/js/hoverable-collapse.js"></script>
+	<script src="../../dashboard/assets/js/misc.js"></script>
+</body>
+
+</html>

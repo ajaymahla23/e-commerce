@@ -1,0 +1,101 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>FSAST - Shopping Cart</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS here -->
+	<link rel="stylesheet" href="assets/css/bootstrap.css">
+	<link rel="stylesheet" href="assets/css/animate.css">
+	<link rel="stylesheet" href="assets/css/swiper-bundle.css">
+	<link rel="stylesheet" href="assets/css/slick.css">
+	<link rel="stylesheet" href="assets/css/magnific-popup.css">
+	<link rel="stylesheet" href="assets/css/font-awesome-pro.css">
+	<link rel="stylesheet" href="assets/css/flaticon_shofy.css">
+	<link rel="stylesheet" href="assets/css/spacing.css">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link rel="shortcut icon" type="image/x-icon" href="dashboard/assets/images/fsast_shop.png">
+</head>
+
+<body>
+	<!-- Pre-loader -->
+	<div th:replace="amazonpage::preloader">...</div>
+	<!-- pre loader area end -->
+
+	<!-- back to top start -->
+	<div th:replace="amazonpage::back_to_top">...</div>
+	<!-- back to top end -->
+
+	<!-- offcanvas area start -->
+	<div th:replace="amazonpage::mobile-sidebar">...</div>
+	<div class="body-overlay"></div>
+	<!-- offcanvas area end -->
+
+	<!-- Mobile menu bottom -->
+	<div th:replace="amazonpage::mobile_bottom_menu">...</div>
+	<!-- mobile menu area end -->
+
+	<!--Mobile search -->
+	<div th:replace="amazonpage::mobile_search">...</div>
+	<!-- search area end -->
+
+	<!-- CART-SIDEBAR -->
+	<div th:replace="amazonpage::cart_sidebar">...</div>
+	<!-- cart mini area end -->
+
+	<!-- Header -->
+	<div th:replace="amazonpage::fsastheader">...</div>
+	<!-- header area end -->
+	<div th:replace="amazonpage::down_move_header">...</div>
+
+	<main>
+		<!-- error area start -->
+		<section class="tp-error-area pt-110 pb-110">
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-xl-6 col-lg-8 col-md-10">
+						<div class="tp-error-content text-center">
+							<div class="tp-error-thumb">
+								<!--<img src="assets/img/error/error.png" alt="">-->
+								<img src="img/wishlist/cart.jpg">
+							</div>
+
+							<h3 class="tp-error-title" th:text="#{main.cartemptyis}">Oops! Your Cart is
+								empty</h3>
+							<!--<p>Whoops, this is embarassing. Looks like the page you were looking for wasn't found.</p>-->
+
+							<a th:href="@{/home}" class="tp-error-btn" th:text="#{cart.backtohome}">Back to Home</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<!-- footer area start -->
+	<div th:replace="amazonpage::fsastfooter">...</div>
+	<!-- footer area end -->
+	<!-- JS here -->
+	<script src="assets/js/vendor/jquery.js"></script>
+	<script src="assets/js/vendor/waypoints.js"></script>
+	<script src="assets/js/bootstrap-bundle.js"></script>
+	<script src="assets/js/meanmenu.js"></script>
+	<script src="assets/js/swiper-bundle.js"></script>
+	<script src="assets/js/slick.js"></script>
+	<script src="assets/js/range-slider.js"></script>
+	<script src="assets/js/magnific-popup.js"></script>
+	<script src="assets/js/nice-select.js"></script>
+	<script src="assets/js/purecounter.js"></script>
+	<script src="assets/js/countdown.js"></script>
+	<script src="assets/js/wow.js"></script>
+	<script src="assets/js/isotope-pkgd.js"></script>
+	<script src="assets/js/imagesloaded-pkgd.js"></script>
+	<script src="assets/js/ajax-form.js"></script>
+	<script src="assets/js/main.js"></script>
+</body>
+
+</html>

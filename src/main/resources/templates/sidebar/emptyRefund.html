@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>FSAST - Received Request Refund</title>
+	<link rel="stylesheet" href="../../dashboard/assets/vendors/mdi/css/materialdesignicons.min.css">
+	<link rel="stylesheet" href="../../dashboard/assets/vendors/css/vendor.bundle.base.css">
+	<link rel="stylesheet"
+		href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+	<style>
+		.dropbtn {
+			background-color: #212529;
+			color: white;
+			font-size: 16px;
+			border: none;
+			cursor: pointer;
+			font-weight: bold;
+		}
+
+		.dropdown {
+			position: relative;
+			display: inline-block;
+		}
+
+
+		.drop_down {
+			display: flex;
+			flex-direction: row;
+		}
+
+		.drop {
+			background-color: #fafafa;
+			color: black;
+			border: none;
+		}
+	</style>
+	<style>
+		#reset {
+			border: none;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 14px;
+			cursor: pointer;
+			background-color: white;
+		}
+	</style>
+	<link rel="stylesheet" href="../../dashboard/assets/css/style.css">
+
+</head>
+
+<body>
+	<style>
+		.navbar .navbar-brand-wrapper .navbar-brand img {
+			height: 70px;
+			vertical-align: middle;
+		}
+	</style>
+	
+	<!-- loader_refresh -->
+	<div th:replace="sidebar/mainpanelverifyshop::loader_refresh">...</div>
+	<!--loader_refresh area end -->
+	
+	<!-- Mobile menu bottom -->
+	<div th:replace="sidebar/mainpanelverifyshop::mobile_bottom_menu">...</div>
+	<!-- mobile menu area end -->
+	<div class="container-scroller">
+		<div th:replace="sidebar/mainpanelverifyshop::navbar">...</div>
+		<div class="container-fluid page-body-wrapper">
+			<div th:if="${storeverification != null}"
+				class="aiz-user-sidenav rounded overflow-auto c-scrollbar-light pb-5 pb-xl-0">
+				<div th:if="${storeverification.status == 'Y'}">
+					<div th:replace="sidebar/mainpanelverifyshop::sidebar">...</div>
+				</div>
+				<div th:if="${storeverification.status == 'N'}">
+					<div th:replace="sidebar/mainpanel::sidebar">...
+					</div>
+				</div>
+			</div>
+			<div th:if="${storeverification == null}"
+				class="aiz-user-sidenav rounded overflow-auto c-scrollbar-light pb-5 pb-xl-0">
+				<div th:replace="sidebar/mainpanel::sidebar">...
+				</div>
+			</div>
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="card mt-3">
+						<div class="card-header">
+							<div class="col  text-md-left">
+								<h5 class="mb-md-0 h6" th:text="#{main.refundreq}">Refund Request</h5>
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table aiz-table mb-0 footable footable-1 breakpoint breakpoint-lg">
+									<thead>
+										<tr class="footable-header">
+
+											<th style="display: table-cell;">#</th>
+											<th style="display: none;">Date</th>
+											<th th:text="#{main.refundord}">Order Id</th>
+											<th>Product</th>
+											<th>Amount</th>
+											<th style="display: none;">Status</th>
+											<th style="display: none;">Reason</th>
+											<th style="display: table-cell;" th:text="#{main.refundapproval}">Approval
+											</th>
+											<th style="display: none;">Reject</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr class="footable-empty">
+											<td colspan="6" th:text="#{main.nothingfound}">Nothing found</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="aiz-pagination">
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			document.getElementById('language-select').addEventListener('change', function () {
+				console.log('Language selected:', this.value);
+				window.location.href = '?lang=' + this.value;
+			});
+		});
+		$(document).ready(function () {
+			var currentLang = $('html').attr('lang');
+			$('#language-select').val(currentLang);
+		});
+	</script>
+
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="../../dashboard/assets/vendors/js/vendor.bundle.base.js"></script>
+	<script src="../../dashboard/assets/js/off-canvas.js"></script>
+	<script src="../../dashboard/assets/js/hoverable-collapse.js"></script>
+	<script src="../../dashboard/assets/js/misc.js"></script>
+</body>
+
+</html>

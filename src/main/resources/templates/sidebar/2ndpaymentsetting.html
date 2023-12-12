@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<!--<html lang="zxx">-->
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>FSAST - Manage Profile</title>
+	<link rel="shortcut icon" href="../../dashboard/assets/images/fsast_shop.png" />
+	<link rel="stylesheet" href="css/bootstrap1.min.css" />
+	<link rel="stylesheet" href="vendors/themify-icons.css" />
+	<link rel="stylesheet" href="vendors/all.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/jquery.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/responsive.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/buttons.dataTables.min.css" />
+
+
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/style1.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link rel="stylesheet"
+		href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<style>
+		.aiz-switch {
+			position: relative;
+			display: inline-block;
+			width: 45px;
+			height: 24px;
+		}
+
+		.aiz-switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #ccc;
+			-webkit-transition: .4s;
+			transition: .4s;
+			border-radius: 34px;
+		}
+
+		.slider.round {
+			border-radius: 17px;
+		}
+
+		.slider:before {
+			position: absolute;
+			content: "";
+			height: 16px;
+			width: 16px;
+			left: 4px;
+			bottom: 4px;
+			background-color: white;
+			-webkit-transition: .4s;
+			transition: .4s;
+			border-radius: 50%;
+		}
+
+		input:checked+.slider {
+			background-color: #28A745;
+			/* Color when checked */
+		}
+
+		input:focus+.slider {
+			box-shadow: 0 0 1px #28A745;
+		}
+
+		input:checked+.slider:before {
+			-webkit-transform: translateX(20px);
+			-ms-transform: translateX(20px);
+			transform: translateX(20px);
+		}
+	</style>
+</head>
+
+<body class="crm_body_bg">
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var shopCreated = /*[[${payemtingsettingCreated}]]*/ 'default';
+		if (!shopCreated) {
+			Swal.fire({
+				title: 'Error!',
+				text: 'Kindly establish your store first.',
+				icon: 'error',
+				confirmButtonText: 'OK'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					window.location.href = '/shopsetting';
+				}
+			});
+		}
+    /*]]>*/
+	</script>
+	
+	<!-- loader_refresh -->
+	<div th:replace="sidebar/mainpanelverifyshop::loader_refresh">...</div>
+	<!--loader_refresh area end -->
+	
+	<!-- Mobile menu bottom -->
+	<div th:replace="sidebar/mainpanelverifyshop::mobile_bottom_menu">...</div>
+	<!-- mobile menu area end -->
+
+	<nav class="sidebar">
+		<div th:if="${storeverification != null}"
+			class="aiz-user-sidenav rounded overflow-auto c-scrollbar-light pb-5 pb-xl-0">
+			<div th:if="${storeverification.status == 'Y'}">
+				<div th:replace="sidebar/mainpanelverifyshop::sidebar">...</div>
+			</div>
+			<div th:if="${storeverification.status == 'N'}">
+				<div th:replace="sidebar/mainpanel::sidebar">...
+				</div>
+			</div>
+		</div>
+		<div th:if="${storeverification == null}"
+			class="aiz-user-sidenav rounded overflow-auto c-scrollbar-light pb-5 pb-xl-0">
+			<div th:replace="sidebar/mainpanel::sidebar">...
+			</div>
+		</div>
+	</nav>
+
+	<section class="main_content dashboard_part large_header_bg" style="background-color: #e6f1f5;">
+		<!--NAVBAR-->
+		<div th:replace="sidebar/mainpanelverifyshop::navbar">...</div>
+
+		<div class="main_content_iner " style="background-color: #e6f1f5;">
+			<div class="container-fluid p-0">
+				<div class="row justify-content-center">
+					<div class="col-lg-12">
+						<div class="white_card card_height_100 mb_30">
+							<div class="white_card_header">
+								<div class="box_header m-0">
+									<div class="main-title">
+										<h3 class="m-0" th:text="#{main.profilmanage}">Manage Profile</h3>
+									</div>
+								</div>
+							</div>
+							<div class="white_card_body">
+								<div class="QA_section">
+
+									<div class="QA_table mb_30">
+
+										<form th:action="@{/updateManageProfile}" method="POST" th:object="${user}"
+											enctype="multipart/form-data" th:onsubmit="return changeCircleColor()">
+											<div class="card" style="border: 1px solid #F2F2F2;">
+												<div class="card-header">
+													<h5 th:text="#{shop.basic}">Basic Info</h5>
+												</div>
+												<div th:if="${message}" th:class="${alertClass}">
+													<p th:text="${message}"></p>
+												</div>
+												<div class="card-body">
+													<div class="form-group row">
+														<label class="col-md-2 col-form-label"
+															th:text="#{main.profilename}">Your
+															name</label>
+														<div class="col-md-10">
+															<input type="text" class="form-control"
+																placeholder="Your name" name="name"
+																th:value="${user.firstName}">
+														</div>
+													</div>
+
+													<div class="form-group row mt-3">
+														<label class="col-md-2 col-form-label"
+															th:text="#{main.profilpass}">Your
+															Password</label>
+														<div class="col-md-10">
+															<input type="password" class="form-control"
+																placeholder="New Password" name="password" id="password"
+																th:value="${user.password}">
+															<input type="checkbox" onclick="showPassword()"
+																style="cursor: pointer;">
+														</div>
+													</div>
+													<div class="form-group row mt-2">
+														<label class="col-md-2 col-form-label"
+															th:text="#{main.profilpho}">Photo</label>
+														<form th:object="${shopDetail}">
+															<div class="col-md-10">
+																<div class="uploads-box">
+																	<div>
+																		<img th:if="${shopDetail} ==null"
+																			src="img/no_logo.png" />
+																		<img th:if="${shopDetail} !=null" width="100"
+																			th:src="@{/shoplogo/{imageName}(imageName=${shopDetail.shopLogo})}" />
+																	</div>
+																</div>
+														</form>
+													</div>
+
+
+													<script>
+														function showPassword() {
+															var x = document.getElementById("password");
+															if (x.type === "password") {
+																x.type = "text";
+															} else {
+																x.type = "password";
+															}
+														}
+													</script>
+												</div>
+											</div>
+
+											<div class="card" style="border: 1px solid #F2F2F2;">
+												<div class="card-header">
+													<h5 th:text="#{main.profilepay}">Payment Setting</h5>
+												</div>
+												<div class="card-body">
+													<!--<div class="row">
+										<div class="col-md-9">
+											<label class="aiz-switch aiz-switch-success mb-3">
+
+											</label>
+										</div>
+									</div>-->
+													<div class="row">
+														<label class="col-md-3 col-form-label"
+															th:text="#{main.profileus}">USDT</label>
+														<div class="col-md-9">
+															<label class="aiz-switch aiz-switch-success mb-3">
+																<input id="usdt_select_checked" value="1"
+																	name="bank_payment_status" type="checkbox"
+																	onclick="usdt_select()" checked>
+																<span class="slider round"></span>
+															</label>
+														</div>
+													</div>
+													<div class="row">
+														<label class="col-md-3 col-form-label"
+															th:text="#{main.profileus}">USDT</label>
+														<div class="col-md-9">
+															<input id="usdt_select_status" type="text"
+																class="form-control mb-3" placeholder="USDT"
+																value="USDT" name="bank_name" readonly>
+														</div>
+													</div>
+												</div>
+											</div>
+											<script>
+												function changeCircleColor() {
+													document.cookie = "step-2-color=yellow; path=/";
+													document.cookie = "line-2-color=yellow; path=/";
+													document.cookie = "step2completed=true; path=/";
+													return true;
+												}
+											</script>
+
+
+											<div class="card" style="border: 1px solid #F2F2F2;">
+												<div class="card-header">
+													<h5 th:text="#{main.profiemail}">Change your email</h5>
+												</div>
+												<div class="card-body">
+													<div class="row">
+														<div class="col-md-2">
+															<label th:text="#{main.youremail}">Your Email</label>
+														</div>
+														<div class="col-md-10">
+															<div class="input-group mb-3">
+																<input type="email" class="form-control"
+																	placeholder="Your Email" name="email"
+																	th:value="${user.email}">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="card" style="border: 1px solid #F2F2F2;">
+												<div class="card-header">
+													<h5 th:text="#{main.profilephon}">change phone</h5>
+												</div>
+												<div class="card-body">
+													<div class="row">
+														<div class="col-md-2">
+															<label th:text="#{main.prophone}"> Your Phone</label>
+														</div>
+														<div class="col-md-10">
+															<div class="input-group mb-3">
+																<input type="number" class="form-control"
+																	placeholder="Your Phone Number" name="mobileNumber"
+																	th:value="${user.mobileNumber}" minlength="10"
+																	maxlength="13">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="mb-3 mt-3 text-center">
+												<button type="button" th:text="#{main.saveprofile}" class="btn"
+													id="step_2"
+													style="background-color: #30778A;border: none;color: white;"
+													onclick="localStorage.setItem('currentStep', 2);viewDetails();">Save
+													Profile</button>
+												<button class="btn" type="submit" th:text="#{main.profilupdate}"
+													style="background-color: #30778A;border: none;color: white;"
+													onclick="localStorage.setItem('currentStep', 2)">Update
+													Profile</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-12">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--FOOTER-->
+		<!--<div th:replace="sidebar/mainpanelverifyshop::footer">...</div>-->
+	</section>
+	<script>
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					$('#imgPreview').attr('src', e.target.result).width(100)
+						.height(100);
+				}
+				reader.readAsDataURL(input.files[0])
+			}
+		}
+
+
+	</script>
+
+
+	<script>
+		function viewDetails() {
+			Swal.fire(
+				'Good job!',
+				'Congrats! Record has been saved successfully!',
+				'success'
+			)
+
+		}
+	</script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$('#shoplogo').on('change', function () {
+				// Get the selected file name
+				var fileName = $(this).val().split('\\').pop();
+
+				// Update the label text
+				$(this).next('.custom-file-label').html(fileName);
+			});
+		});
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			document.getElementById('language-select').addEventListener('change', function () {
+				console.log('Language selected:', this.value);
+				window.location.href = '?lang=' + this.value;
+			});
+		});
+		$(document).ready(function () {
+			var currentLang = $('html').attr('lang');
+			$('#language-select').val(currentLang);
+		});
+	</script>
+
+
+	<script src="vendors/datatable/js/jquery1-3.4.1.min.js"></script>
+	<script src="vendors/datatable/js/popper1.min.js"></script>
+	<script src="vendors/datatable/js/bootstrap1.min.js"></script>
+	<script src="vendors/datatable/js/metisMenu.js"></script>
+	<script src="vendors/datatable/js/jquery.dataTables.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.responsive.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.buttons.min.js"></script>
+	<script src="vendors/datatable/js/buttons.flash.min.js"></script>
+	<script src="vendors/datatable/js/jszip.min.js"></script>
+	<script src="vendors/datatable/js/pdfmake.min.js"></script>
+	<script src="vendors/datatable/js/vfs_fonts.js"></script>
+	<script src="vendors/datatable/js/buttons.html5.min.js"></script>
+	<script src="vendors/datatable/js/buttons.print.min.js"></script>
+	<script src="vendors/datatable/js/perfect-scrollbar.min.js"></script>
+	<script src="vendors/datatable/js/scrollable-custom.js"></script>
+	<script src="vendors/datatable/js/custom.js"></script>
+</body>
+
+</html>

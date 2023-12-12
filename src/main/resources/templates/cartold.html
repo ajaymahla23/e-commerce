@@ -1,0 +1,636 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+
+<head>
+	<meta charset="ISO-8859-1">
+
+	<title>FSAST - Shopping Cart</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+		integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" href="amazon/style3.css">
+	<link rel="shortcut icon" href="../../dashboard/assets/images/fsast_shop.png" />
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+	<style>
+		.dropbtn {
+			background-color: #131a22;
+			color: white;
+			font-size: 16px;
+			border: none;
+			cursor: pointer;
+			font-weight: bold;
+		}
+
+		.dropdown {
+			position: relative;
+			display: inline-block;
+		}
+
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: #f9f9f9;
+			min-width: 120px;
+			box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+			z-index: 1;
+		}
+
+		.dropdown-content a {
+			color: black;
+			padding: 2px;
+			text-decoration: none;
+			display: block;
+			border-radius: 4px;
+		}
+
+		.dropdown-content a:hover {
+			background-color: #f1f1f1
+		}
+
+		.dropdown:hover .dropdown-content {
+			display: block;
+		}
+	</style>
+
+	<style>
+		.drop_down {
+			width: 100px;
+			height: 50px;
+			display: flex;
+			flex-direction: row;
+		}
+
+		.drop {
+			background-color: #212529;
+			height: 30px;
+			color: #f1f1f1;
+			border: none;
+			margin-top: 6px;
+		}
+	</style>
+	<style>
+		.product_image {
+			width: 80%;
+			height: 85%;
+		}
+
+		.head_text {
+			font-weight: 500;
+		}
+
+		#subtotal {
+			font-size: 18px;
+			font-weight: bold;
+		}
+
+		.item,
+		.price {
+			color: #B12704;
+		}
+
+		.proceed {
+			background-color: #F0C14B;
+			border-color: #ecc154;
+			color: white;
+			padding: 8px 25px;
+			border-radius: 50px;
+			cursor: pointer;
+		}
+	</style>
+
+	<!--popup form-->
+	<style>
+		#myForm {
+			right: 25%;
+			top: 0;
+			opacity: 1;
+			width: 40%;
+			border-radius: 8px;
+		}
+
+		/* The popup form - hidden by default */
+		.form-popup {
+			display: none;
+			position: absolute;
+			top: auto;
+			border: 3px solid #f1f1f1;
+			z-index: 9;
+		}
+
+		/* Add styles to the form container */
+		.form-container {
+			padding: 10px;
+			background-color: white;
+		}
+
+		/* Set a style for the submit/login button */
+		.form-container .btn {
+			background-color: goldenrod;
+			color: white;
+			border: none;
+			cursor: pointer;
+		}
+
+		/* Add a red background color to the cancel button */
+		.form-container .cancel {
+			background-color: goldenrod;
+		}
+	</style>
+	<style>
+		#signout {
+			background-color: #232F3E;
+			border: none;
+			color: white;
+
+			text-decoration: none;
+
+			cursor: pointer;
+		}
+	</style>
+	<style>
+		.products-list {
+			display: flex;
+			flex-wrap: wrap;
+		}
+
+		.product-item {
+			border: 1px solid #ddd;
+			padding: 10px;
+			text-align: center;
+			background-color: white;
+		}
+
+
+
+		#deal {
+			background-color: crimson;
+			color: white;
+			border-radius: 5px;
+			padding: 2px 2px 2px 2px;
+			font-size: 11px;
+		}
+
+		#update-btn {
+			border: none;
+			padding: 5px 5px 5px 5px;
+			font-size: 13px;
+			background-color: white;
+		}
+
+		.remove-button {
+			border: none;
+			padding: 5px 5px 5px 5px;
+			font-size: 12px;
+			background-color: white;
+		}
+
+		.wishlist-button {
+			border: none;
+			padding: 5px 5px 5px 5px;
+			font-size: 12px;
+			background-color: white;
+		}
+
+		#fullfilled {
+			font-size: 14px;
+			color: white;
+			background-color: #232F3E;
+			border-radius: 5px;
+			width: fit-content;
+			padding: 1px;
+		}
+	</style>
+	
+
+
+
+</head>
+
+<body id="top">
+	<nav th:fragment="amazonheader">
+		<div class="first">
+			<div class="flex logo">
+				<a th:href="@{/home}"><img src="amazonviewonly/fsast_shop.png" /></a>
+			</div>
+			<form th:action="@{/search}" method="get">
+				<div class="flex input">
+					<input type="text" name="name" placeholder="Search here..." style="width: 250px"
+						th:value="${session.searchText}">
+					<button style="border-radius: 5px;" type="submit"><i class="fas fa-search"></i></button>
+				</div>
+			</form>
+			<div class="flex right">
+				<div class="flex lang">
+				</div>
+				<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+				<script>
+					document.addEventListener('DOMContentLoaded', function () {
+						document.getElementById('language-select').addEventListener('change', function () {
+							console.log('Language selected:', this.value);
+							window.location.href = '?lang=' + this.value;
+						});
+					});
+					$(document).ready(function () {
+						var currentLang = $('html').attr('lang');
+						$('#language-select').val(currentLang);
+					});
+				</script>
+				<div th:switch="${#locale.language}" class="drop_down">
+					<p th:case="en"><img th:src="@{img/usa.jpg}" alt="English" width="20" height="15"> </p>
+					<p th:case="zh"><img th:src="@{img/chinese.jpg}" alt="Chinese" width="20" height="20"></p>
+					<p th:case="vi"><img src="img/vietnam.jpg" alt="Vietnam" width="20" height="20"></p>
+					<p th:case="*">English <img th:src="@{img/usa.jpg}" alt="English" width="20" height="15"></p>
+					<select id="language-select" class="drop">
+						<option value="en">EN</option>
+						<option value="zh">中文</option>
+						<option value="vi">Tiếng Việt</option>
+					</select>
+				</div>
+
+				<div class="dropdown">
+					<div class="mt-2">
+						<button class="dropbtn" th:text="#{header.welcome}">Hello, </button>
+					</div>
+					<span th:text="${username}"></span>
+					<i class="fas fa-caret-down"></i>
+					<div class="dropdown-content">
+						<a th:href="@{/shoplogin}" th:text="#{header.wallselle}" target="_blank">Seller</a>
+						<a th:href="@{/your_order}" th:text="#{header.carord}">Your Orders</a>
+						<a th:href="@{/wishlist}" th:text="#{header.wishlist}">Wishlist</a>
+						<a onclick="show_make_wallet_recharge_modal()" th:text="#{header.cartwall}">Wallet</a>
+						<a th:href="@{/about}" th:text="#{about.aboutus}">About</a>
+						<a th:href="@{/logout}" th:text="#{header.logout}" name="logout">Logout</a>
+					</div>
+				</div>
+
+				<div class="flex cart">
+					<a th:href="@{/cart}" style="text-decoration: none;"> <i class="fas fa-shopping-cart"></i>
+						<p class="ca" th:text="${countCart}" style="color: #F08804;font-weight: bold;">count</p>
+						<span class="ca" th:text="#{header.cart}">Cart</span>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="second">
+			<div class="second-2">
+				<!--<form id="categoryForm" th:action="@{/selectedcategory}" method="get">
+						<select name="categoryName" onchange="submitForm()" id="selectCategory">
+							<option> Select Category</option>
+							<option th:each="category : ${categoryList}" th:text="${category.name}"
+								th:value="${category.name}"></option>
+						</select>
+						<input type="submit" id="submitButton" style="display: none;">
+					</form>
+
+					<style>
+						#selectCategory {
+							background-color: #232F3E;
+							color: white;
+							text-align: center;
+							text-decoration: none;
+							display: inline-block;
+							font-size: 14px;
+							cursor: pointer;
+							border-radius: 5px;
+							border: none;
+						}
+					</style>
+
+					<script>
+						function submitForm() {
+							var selectedCategory = document.getElementsByName("categoryName")[0].value;
+							if (selectedCategory !== "") {
+								document.getElementById("categoryForm").submit();
+							}
+						}
+					</script>-->
+
+				<a href="https://fastshopcustomer.com/" style="text-decoration: none;color: white;">
+					<li th:text="#{header.service}">Customer Service</li>
+				</a>
+				<a th:href="@{/cart}" style="text-decoration: none;color: white;">
+					<li th:text="#{header.cart}">Cart</li>
+				</a>
+				<a th:href="@{/wishlist}" style="text-decoration: none;color: white;">
+					<li th:text="#{header.wishlist}">Wishlist</li>
+				</a>
+
+				<a th:href="@{/shoplogin}" target="_blank" style="text-decoration: none;color: white;">
+					<li th:text="#{header.sell}">Seller</li>
+				</a>
+				<li th:text="#{header.cartwall}" onclick="show_make_wallet_recharge_modal()">Wallet
+				</li>
+			</div>
+			<div class="second-3" style="text-align: right;">
+				<span th:text="#{main.yourwallet}">Your Wallet: $</span>
+				<input th:if="${walletAmtList} != null" th:value="${walletAmtList.walletAmount}" id="walletamt"
+					style="background-color: #232F3E; width: 21%; color: white; border: none;" readonly>
+				<input th:if="${walletAmtList} == null" id="walletamt" value="0.0"
+					style="background-color: #232F3E; border: none; color: white; width: 12%;" readonly>
+			</div>
+
+			<div>
+				<form th:action="@{/signout}" method="post">
+					<input type="hidden" style="color: white; text-decoration: none;" value="0" name="signout">
+					<button type="submit" id="signout" th:text="#{header.logout}">Logout</button>
+				</form>
+			</div>
+		</div>
+
+		<!--Pop pup form-->
+		<div class="form-popup mt-5" id="myForm">
+			<form class="form-container" th:action="@{/recharge_walletbyuser}" method="post"
+				enctype="multipart/form-data">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4" style="background-color: lightgrey;">
+							<h4 class="card-title" th:text="#{main.offline}">Offline Recharge Wallet
+							</h4>
+							<p class="card-text" style="font-weight: bold;" th:text="#{main.method}">
+								Recharge Method</p>
+							<p class="card-text" style="background-color: white;font-size: 20px;color: #212529;"
+								th:text="#{main.usd}">USD(TRC)
+							</p>
+						</div>
+						<div class="col-md-8">
+							<h5 th:text="#{main.walladdr}">Wallet address</h5>
+							<form>
+								<div class="form-group">
+									<label for="amountByUser" th:text="#{main.amountwall}">Amount</label>
+									<input type="number" class="form-control" required name="amountByUser"
+										id="amountByUser" placeholder="Amount" min="1">
+								</div>
+								<div class="form-group">
+									<label for="walletImg" th:text="#{main.wallphoto}">Photo</label>
+									<input type="file" class="form-control-file" name="walletImg"
+										accept="image/gif, image/jpg, image/jpeg, image/png" id="walletImg" />
+								</div>
+								<button type="button" class="btn btn-secondary" onclick="closeForm()"
+									th:text="#{main.wallclos}">Close</button>
+								<button type="submit" class="btn btn-primary" th:text="#{main.wallcon}">Confirm</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</nav>
+
+	<div class="container">
+		<div class="col-md-12 row mt-1">
+			<div class="col-md-8 mb-3 mt-1">
+				<h3 th:text="#{main.cartshopp}">Shopping Cart</h3>
+				<div class="card" th:each="cart ,iStat : ${cartItemList}">
+					<div class="card-body">
+						<div class="col-md-12 d-flex">
+							<div th:if="${message}" th:text="${message}" th:class="${alertClass}"></div>
+							<div class="col-md-4 mt-2">
+								<img th:src="@{/addproductimg/{imageName}(imageName=${cart.productsDetail.products.imageName})}"
+									class="product_image">
+							</div>
+							<div class="col-md-8">
+								<h5 style="font-weight: bold;" th:text="${cart.productsDetail.products.name}"></h5>
+								<h5 th:text="${cart.productsDetail.products.remarks}"></h5>
+								<span th:text="'$ ' + ${cart.productPrice}" style="font-weight: bold;"></span>
+								<div class="stock">
+									<span th:text="#{main.cartstock}"
+										style="color: green; font-weight: 300; font-size: 15px;">In
+										stock</span>
+								</div>
+								<span id="deal" th:text="#{main.dealofday}">Deal of the day</span>
+								<form th:action="@{/updateQuantity}" method="post" class="mt-2">
+									<input id="productDetailId" name="productDetailId" type="hidden"
+										th:value="${cart.productsDetail.productDetailId}">
+									<input id="quantity" name="quantity" type="number" min="1"
+										th:value="${cart.quantity}" placeholder="Enter Quantity" required
+										style="width: 70px; border-radius: 8px; text-align: center;">
+
+									<button type="submit" id="update-btn" th:text="#{header.updatecart}">Update</button>
+								</form>
+								<div class="mt-2" style="display: flex;">
+									<form th:action="@{/cart_remove}" method="post">
+										<input type="hidden" name="productDetailId[]" id="productDetailId"
+											th:value="${cart.productsDetail.productDetailId}">
+										<button type="submit" class="remove-button"
+											th:text="#{krisshop.remove}">Remove</button>
+									</form>
+									<div class="mt-2"
+										style="border-left: 1px solid lightgray; height: 15px; margin: 0 10px;">
+									</div>
+									<form th:action="@{/add_to_wishlist}" method="post">
+										<input type="hidden" name="productDetailId[]" id="productDetailId"
+											th:value="${cart.productsDetail.productDetailId}">
+										<button type="submit" class="wishlist-button"
+											th:text="#{krisshop.addwishlist}">Add to Wishlist</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card col-4 mt-5" style="height: fit-content;">
+				<div class="card-body">
+					<h5 th:text="#{main.cartdelivery}" style="color: forestgreen;">Your order is eligible for free
+						delivery</h5>
+					<div class="total mb-2"><span th:text="#{main.subtoatl$}">SubTotal : </span>
+						<input name="buyAmount" id="buyAmount" th:value="${totalAmt}"
+							style="border: none; font-weight: bold; color: red;" readonly>
+					</div>
+					<span style="font-size: 14px;" th:text="#{main.productsupportfaster}">product support fastest
+						delivery </span>
+					<div class="mt-2 mb-4" id="fullfilled" th:text="#{main.fullfilledby}">Fullfilled by krisshop </div>
+					<a class="btn mb-2 proceed" onclick="paidPayment()" th:text="#{main.cartproceed}">Proceed
+						to Buy</a>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="card">
+			<h3 style="padding: 10px" th:text="#{main.relatedproduct}">Related Products</h3>
+			<div class="products-list mb-2">
+				<div th:each="productDetail : ${relatedProductsList}" class="product-item">
+					<a type="button" style="text-decoration: none;"
+						th:href="@{/category/productDetail/{id}(id=${productDetail.productDetailId})}">
+						<div style="width: 240px; height: 240px; overflow: hidden;">
+							<img th:src="@{/addproductimg/{imageName}(imageName=${productDetail.products.imageName})}"
+								style="width: 100%; height: 100%; object-fit: contain; padding: 20px;background-color: white;">
+						</div>
+						<span th:text="${productDetail.products.name}"
+							style="font-size: 13px;color: #212529;font-weight: bold;">
+							Name
+						</span><br>
+						<span class="mb-0 " th:text="'$ ' + ${productDetail.unitPrice}"
+							style="font-size: 13px;color: #131a22;font-weight: bold;"></span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<section class="footer mt-5" th:fragment="footer">
+		<div class="backtop">
+			<span id="back-to-top" th:text="#{header.top}"></spn>
+		</div>
+		<div class="detail">
+			<div class="table">
+				<div>
+					<div class="t-head" th:text="#{header.know}" style="padding-right: 8px;">Get to Know Us</div>
+					<div class="mt-2" style="color: white; font-size: 14px;">
+						<span th:text="#{header.carrer}">Careers</span><br>
+						<span th:text="#{header.blog}">Blogs</span><br>
+						<a th:href="@{/about}" style="text-decoration: none;color: white;">
+							<span th:text="#{header.about}">About Krisshop</span>
+						</a><br>
+						<span th:text="#{header.advice}">Krisshop Advices</span>
+					</div>
+				</div>
+
+				<div>
+					<div class="t-head" th:text="#{header.money}">Make Money with Us</div>
+					<div class="mt-2" style="color: white; font-size: 14px;">
+						<a th:href="@{/shoplogin}" style="text-decoration: none;color: white;">
+							<span th:text="#{header.sell}">Sell Products on Krisshop</span>
+						</a><br>
+						<a th:href="@{/shoplogin}" style="text-decoration: none;color: white;">
+							<span th:text="#{header.business}">Sell on Krisshop Business</span>
+						</a><br>
+						<a th:href="@{/shoplogin}" style="text-decoration: none;color: white;">
+							<span th:text="#{header.hub}">Host an Krisshop Hub</span>
+						</a>
+					</div>
+				</div>
+
+				<div>
+					<div class="t-head" th:text="#{header.payment}">Krisshop Payment Products</div>
+					<div class="mt-2" style="color: white; font-size: 14px;">
+						<span th:text="#{header.cards}">Krisshop Business Cards</span><br>
+						<span th:text="#{header.point}">Shop with Points</span><br>
+						<a th:href="@{/home}" style="text-decoration: none;color: white;">
+							<span th:text="#{header.balance}">Reload your Balance</span>
+						</a>
+					</div>
+				</div>
+
+				<div>
+					<div class="t-head" th:text="#{header.help}">Let Us Help You</div>
+					<div class="mt-2" style="color: white; font-size: 14px;">
+						<a th:href="@{/home}" style="text-decoration: none;color: white;">
+							<span th:text="#{header.detail}">Your Account</span>
+						</a><br>
+						<a th:href="@{/your_order}" style="text-decoration: none;color: white;">
+							<span th:text="#{header.order}">Yoyr Orders</span>
+						</a><br>
+						<a th:href="@{/your_order}" style="text-decoration: none;color: white;">
+							<span th:text="#{header.return}">Returns and Replacements</span>
+						</a><br>
+						<a href="https://fastshopcustomer.com/" style="text-decoration: none;color: white;">
+							<span th:text="#{header.assistant}">Krisshop Assistant</span>
+						</a><br>
+						<a href="https://fastshopcustomer.com/" style="text-decoration: none;color: white;">
+							<span th:text="#{header.help}">Help</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="line"></div>
+		<div class="copy">
+			<hr>
+			<span th:text="#{header.rights}">&copy; 2023 All Rights Resurved With Krisshop</span>
+		</div>
+		<!--	back to top-->
+		<script>
+			const backToTopButton = document.querySelector('#back-to-top');
+			backToTopButton.addEventListener('click', () => {
+				window.scrollTo(0, 0);
+			});
+		</script>
+	</section>
+</body>
+
+<script>
+	$(document).ready(function () {
+		var currentLang = $('html').attr('lang');
+		$('#language-select').val(currentLang);
+	});
+</script>
+
+<script>
+	function paidPayment() {
+		let walletAmt = JSON.parse(document.getElementById("walletamt").value);
+		let buyAmount = JSON.parse(document.getElementById("buyAmount").value);
+		//let productDetailId =JSON.parse(document.getElementById("productDetailId").value);
+		var checkboxes = document.querySelectorAll('input[name="productDetailId[]"]');
+
+		if (walletAmt <= buyAmount) {
+			swal("You have $" + walletAmt + " in wallet. Please, add amount in the wallet!!!");
+		} else {
+			var productDetailId = [];
+			for (var i = 0; i < checkboxes.length; i++) {
+				productDetailId.push(checkboxes[i].value);
+			}
+
+			$.ajax({
+				url: "/buy_order",
+				data: JSON.stringify({buyAmount: buyAmount, productDetailId: productDetailId}),
+				contentType: "application/json",
+				type: "post",
+				dataType: "json",
+				success: function (data) {
+					console.log(data);
+				},
+
+				error: function (error) {
+					console.log(error);
+				}
+			})
+			setTimeout(function () {
+				location.reload();
+			}, 2000);
+		}
+	}
+</script>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	var message = [[${message}]];
+	if (message) {
+		swal("Good job!", message, "success")
+	}
+	/*]]>*/
+</script>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	var notmessage = [[${notmessage}]];
+	if (notmessage) {
+		swal("Good job!", notmessage, "success")
+	}
+	/*]]>*/
+</script>
+
+<script>
+	function show_make_wallet_recharge_modal() {
+		document.getElementById("myForm").style.display = "block";
+	}
+	function closeForm() {
+		document.getElementById("myForm").style.display = "none";
+	}
+</script>
+
+<script src="amazon/cart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+</html>

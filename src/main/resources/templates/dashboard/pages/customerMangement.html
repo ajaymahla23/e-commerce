@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>FSAST - Admin Panel</title>
+	<!-- plugins:css -->
+	<link rel="stylesheet" href="../../dashboard/assets/vendors/mdi/css/materialdesignicons.min.css">
+	<link rel="stylesheet" href="../../dashboard/assets/vendors/css/vendor.bundle.base.css">
+
+	<link rel="stylesheet" href="../../dashboard/assets/css/style.css">
+	<!-- End layout styles -->
+
+
+	<style>
+		.dropbtn {
+			background-color: #212529;
+			color: white;
+			font-size: 16px;
+			border: none;
+			cursor: pointer;
+			font-weight: bold;
+		}
+
+		.dropdown {
+			position: relative;
+			display: inline-block;
+		}
+
+
+
+		.drop_down {
+			width: 100px;
+			height: 32px;
+			display: flex;
+			flex-direction: row;
+		}
+
+		.drop {
+			background-color: #fafafa;
+			color: black;
+			border: none;
+		}
+	</style>
+	<style>
+		#myForm,
+		#myForm1 {
+			left: 40%;
+			top: 10%;
+			width: 25%;
+
+		}
+
+		/* The popup form - hidden by default */
+		.form-popup {
+			display: none;
+			position: absolute;
+			top: auto;
+			border: 3px solid #f1f1f1;
+			z-index: 9;
+		}
+
+		/* Add styles to the form container */
+		.form-container {
+			padding: 10px;
+			background-color: white;
+		}
+
+		/* Full-width input fields */
+		.form-container input[type=text],
+		.form-container input[type=password] {
+			border: none;
+			background: #f1f1f1;
+
+		}
+
+		/* When the inputs get focus, do something */
+		.form-container input[type=text]:focus,
+		.form-container input[type=password]:focus {
+			background-color: #ddd;
+			outline: none;
+			margin: 0 0 0 20px;
+		}
+
+		/* Set a style for the submit/login button */
+		.form-container .btn {
+			background-color: goldenrod;
+			color: white;
+
+			border: none;
+			cursor: pointer;
+
+			margin-bottom: 10px;
+
+		}
+
+		/* Add a red background color to the cancel button */
+		.form-container .cancel {
+			background-color: goldenrod;
+		}
+
+		.catid {
+			margin-right: 30px;
+		}
+
+		.editbutton {
+			padding: 5px 15px 5px 15px;
+			border-radius: 5px;
+			border-color: orange;
+			background-color: orange;
+			color: white;
+		}
+
+		.editbutton:hover {
+			color: black;
+		}
+	</style>
+	<style>
+		.product_image {
+			transition: transform 0.5s;
+			cursor: pointer;
+		}
+
+		.product_image:hover {
+			transform: scale(2.5);
+		}
+	</style>
+	<style>
+		.navbar .navbar-brand-wrapper .navbar-brand img {
+			height: 70px;
+			vertical-align: middle;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container-scroller">
+		<!-- partial:../../partials/_navbar.html -->
+		<div th:replace="dashboard/dashboard::navbar">...</div>
+		<!-- partial -->
+		<div class="container-fluid page-body-wrapper">
+			<!-- partial:../../partials/_sidebar.html -->
+			<div th:replace="dashboard/dashboard::sidebar">...</div>
+
+			<!-- partial -->
+
+
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3 class="page-title" th:text="#{dashboard.customermana}"> Customer Management </h3>
+						<div class="search-field d-none d-md-block">
+							<form id="search-form" class="d-flex align-items-center h-100">
+								<div class="input-group" style="border: 1px solid grey; border-radius: 5px;">
+
+									<input type="text" class="form-control  border-0" name="query"
+										placeholder="Mobile Number">
+									<div class="input-group-prepend">
+										<button type="submit" style="border: none;"><i
+												class="input-group-text border-0 mdi mdi-magnify"
+												style="border-color: darkgrey;"></i></button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+
+					<style>
+						#enable-button {
+							background-color: #ff9c1a;
+							color: white;
+							text-align: center;
+							text-decoration: none;
+							display: inline-block;
+							padding: 4px;
+							cursor: pointer;
+							border: none;
+							border-radius: 5px;
+							font-size: 16px;
+						}
+					</style>
+
+
+					<!--	<button id="enable-button" th:text="#{dashborad.enableuser}">Enable User</button>
+
+					<p><span th:text="#{dashboard.totalcount}">Total Count: </span><span id="total-count"></span></p>-->
+
+
+					<div class="row">
+						<div class="col-lg-12 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title" th:text="#{dashboard.customermana}">Customer Management</h4>
+									<div class="table-responsive">
+										<table class="table">
+											<thead>
+												<tr>
+													<!--<th>#</th>-->
+													<th scope="col" th:text="#{dashboard.orderuserid}">User id</th>
+													<th scope="col" th:text="#{dashboard.orderusername}">Username</th>
+													<th scope="col" th:text="#{dashboard.orderidshopemail}">Email</th>
+													<th scope="col" th:text="#{dashboard.mobile}">Phone Number</th>
+													<th scope="col" th:text="#{dashboard.bala}">Balance</th>
+													<th scope="col" th:text="#{dashboard.shoplo}">Shop Logo</th>
+													<!--<th scope="col" th:text="#{dashboard.audit}">Audit Status</th>-->
+													<!--<th scope="col" th:text="#{dashboard.remar}">Remarks</th>-->
+													<!--<th scope="col" th:text="#{dashboard.operate}">operate</th>-->
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="user : ${userList}">
+													<!--	<td><input type="checkbox" name="id[]" /></td>-->
+													<td th:text="${user['userId']}"></td>
+													<td th:text="${user['email']}"></td>
+													<td>
+														<span th:if="${user['shopEmail']} != null"
+															th:text="${user['shopEmail']}"></span>
+														<span th:if="${user['shopEmail']} == null" th:text="'-'"></span>
+														<span th:unless="${user['shopEmail']} != null"></span>
+													</td>
+													<td th:text="${user['phoneNumber']}"></td>
+													<td th:text="'$ '+${user['balance']}"></td>
+													<!--<td><img th:src="@{${user['shopLogo']}}" class="product_image"/></td>-->
+													<td><img th:src="@{/shoplogo/{imageName}(imageName=${user['shopLogo']})}"
+															class="product_image"></td>
+													<!--<td>
+													<span th:if="${user['shopId'] != null}"
+														style="color: green;">Pass</span>
+													<span th:unless="${user['shopId'] != null}" style="color: red;">To
+														Be Review</span>
+												</td>-->
+													<!--<td>-</td>-->
+													<!--<td><button
+															th:attr="onclick='openForm(' + ${user['userId']} + ', \'' + ${user['firstName']} + '\', \'' + ${user['email']} + '\', \'' + ${user['shopEmail']} + '\', \'' + ${user['phoneNumber']} + '\', \'' + ${user['balance']} + '\')'"
+															class="editbutton" th:text="#{dashboard.edit}">Edit</button>
+													</td>-->
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-popup" id="myForm">
+							<form th:action="@{/editUser}" class="form-container" method="post">
+								<div class="modal-footer justify-content-between bg-light"
+									th:text="dashboared.edituser">
+									Edit User
+								</div>
+
+								<label for="userId" class="form-label mb-2 mt-2" th:text="#{dashboard.orderuserid}">User
+									ID:</label>
+								<input type="text" class="form-control" name="userId" id="userId" readonly>
+
+								<label for="userName" cclass="form-label mb-2 mt-2" th:text="#{header.namecart}">User
+									Name:</label>
+								<input type="text" class="form-control" name="name" id="userName" readonly>
+
+								<label for="userEmail" class="form-label mb-2 mt-2"
+									th:text="#{dashboard.orderusername}">User
+									Email:</label>
+								<input type="text" class="form-control" name="email" id="userEmail" readonly>
+
+								<label for="shopEmail" class="form-label mb-2 mt-2"
+									th:text="#{dashboard.orderidshopemail}">Shop Email:</label>
+								<input type="text" class="form-control" name="shopEmail" id="shopEmail">
+
+								<label for="phoneNumber" class="form-label mb-2 mt-2"
+									th:text="#{dashboard.mobile}">Phone
+									Number:</label>
+								<input type="text" class="form-control" name="phoneNumber" id="phoneNumber" readonly>
+
+								<label for="Balance" cclass="form-label mb-2 mt-2"
+									th:text="#{dashboard.bala}">Balance:</label>
+								<input type="text" class="form-control" name="balance" id="balance" readonly>
+
+								<div class="modal-footer justify-content-between">
+									<button type="button" class="btn cancel" onclick="closeForm()"
+										th:text="#{dashbored.close}">Close</button>
+									<button type="submit" class="btn" th:text="#{dashbored.save}">Save</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+				<script>
+					$('#search-form').on('submit', function (event) {
+						event.preventDefault();
+						var query = $('input[name="query"]').val().toLowerCase();
+						$('tbody tr').each(function () {
+							var phoneNumber = $(this).find('td:nth-child(5)').text().toLowerCase();
+							if (phoneNumber.includes(query)) {
+								$(this).show();
+							} else {
+								$(this).hide();
+							}
+						});
+					});
+				</script>
+
+
+				<style>
+					.editbutton {
+						padding: 5px 15px 5px 15px;
+						border-radius: 5px;
+						border-color: orange;
+						background-color: orange;
+						color: white;
+					}
+
+					.editbutton:hover {
+						color: black;
+					}
+				</style>
+				<div th:replace="dashboard/dashboard::footer">...</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		function openForm(userId, name, email, shopEmail, phoneNumber, balance) {
+			// pre-fill the form with the data of the user
+			document.getElementById("userId").value = userId;
+			document.getElementById("userName").value = name;
+			document.getElementById("userEmail").value = email;
+			document.getElementById("shopEmail").value = shopEmail;
+			document.getElementById("phoneNumber").value = phoneNumber;
+			document.getElementById("balance").value = balance;
+
+			document.getElementById("myForm").style.display = "block";
+		}
+
+		function closeForm() {
+			document.getElementById("myForm").style.display = "none";
+		}
+	</script>
+
+	<!-- Add the JavaScript code -->
+	<script>
+		const totalCount = document.querySelector('#total-count');
+		const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+		totalCount.textContent = checkboxes.length;
+		checkboxes.forEach((checkbox, index) => {
+			const isChecked = localStorage.getItem(`checkbox-${index}`);
+			if (isChecked === 'true') {
+				checkbox.checked = true;
+				checkbox.disabled = true;
+				totalCount.textContent--;
+			}
+		});
+
+		checkboxes.forEach((checkbox, index) => {
+			checkbox.addEventListener('change', () => {
+				let count = parseInt(totalCount.textContent);
+				if (checkbox.checked) {
+					count--;
+					localStorage.setItem(`checkbox-${index}`, 'true');
+				} else {
+					count++;
+					localStorage.setItem(`checkbox-${index}`, 'false');
+				}
+				totalCount.textContent = count;
+				setTimeout(function () {
+					location.reload();
+				}, 2000);
+			});
+		});
+
+		// Add an event listener to the enable button
+		const enableButton = document.querySelector('#enable-button');
+		enableButton.addEventListener('click', () => {
+			checkboxes.forEach(checkbox => {
+				if (checkbox.disabled) {
+					checkbox.disabled = false;
+				}
+				setTimeout(function () {
+					location.reload();
+				}, 2000);
+			});
+		});
+
+	</script>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			document.getElementById('language-select').addEventListener('change', function () {
+				console.log('Language selected:', this.value);
+				window.location.href = '?lang=' + this.value;
+			});
+		});
+		$(document).ready(function () {
+			var currentLang = $('html').attr('lang');
+			$('#language-select').val(currentLang);
+		});
+	</script>
+
+	<script src="../../dashboard/assets/vendors/js/vendor.bundle.base.js"></script>
+	<script src="../../dashboard/assets/js/off-canvas.js"></script>
+	<script src="../../dashboard/assets/js/hoverable-collapse.js"></script>
+	<script src="../../dashboard/assets/js/misc.js"></script>
+</body>
+
+</html>

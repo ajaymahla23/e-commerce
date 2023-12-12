@@ -1,0 +1,179 @@
+<!doctype html>
+<!--<html xmlns:th="http://www.thymeleaf.org" class="no-js" lang="zxx">-->
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>FSAST - Your Wishlist</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Place favicon.ico in the root directory -->
+	<link rel="shortcut icon" type="image/x-icon" href="dashboard/assets/images/fsast_shop.png">
+
+	<!-- CSS here -->
+	<link rel="stylesheet" href="assets/css/bootstrap.css">
+	<link rel="stylesheet" href="assets/css/animate.css">
+	<link rel="stylesheet" href="assets/css/swiper-bundle.css">
+	<link rel="stylesheet" href="assets/css/slick.css">
+	<link rel="stylesheet" href="assets/css/magnific-popup.css">
+	<link rel="stylesheet" href="assets/css/font-awesome-pro.css">
+	<link rel="stylesheet" href="assets/css/flaticon_shofy.css">
+	<link rel="stylesheet" href="assets/css/spacing.css">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+
+<body>
+	<!-- Pre-loader -->
+	<div th:replace="amazonpage::preloader">...</div>
+	<!-- pre loader area end -->
+
+	<!-- back to top start -->
+	<div th:replace="amazonpage::back_to_top">...</div>
+	<!-- back to top end -->
+
+	<!-- offcanvas area start -->
+	<div th:replace="amazonpage::mobile-sidebar">...</div>
+	<div class="body-overlay"></div>
+	<!-- offcanvas area end -->
+	<!-- Mobile menu bottom -->
+	<div th:replace="amazonpage::mobile_bottom_menu">...</div>
+	<!-- mobile menu area end -->
+
+	<!--Mobile search -->
+	<div th:replace="amazonpage::mobile_search">...</div>
+	<!-- search area end -->
+
+	<!-- CART-SIDEBAR -->
+	<div th:replace="amazonpage::cart_sidebar">...</div>
+	<!-- cart mini area end -->
+
+	<!-- Header -->
+	<div th:replace="amazonpage::fsastheader">...</div>
+	<!-- header area end -->
+	<div th:replace="amazonpage::down_move_header">...</div>
+
+	<main>
+
+		<!-- breadcrumb area start -->
+		<section class="breadcrumb__area include-bg pt-95 pb-50">
+			<div class="container">
+				<div class="row">
+					<div class="col-xxl-12">
+						<div class="breadcrumb__content p-relative z-index-1">
+							<h3 class="breadcrumb__title" th:text="#{header.wishlist}">Wishlist</h3>
+							<div class="breadcrumb__list">
+								<span><a th:href="@{/home}" th:text="#{header.home}">Home</a></span>
+								<span th:text="#{header.wishlist}">Wishlist</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- breadcrumb area end -->
+
+		<!-- cart area start -->
+		<section class="tp-cart-area pb-120">
+			<div class="container">
+				<div class="row">
+					<div class="col-xl-12">
+						<div class="tp-cart-list mb-45 mr-30">
+							<table class="table">
+								<thead>
+									<tr>
+										<th colspan="2" class="tp-cart-header-product" th:text="#{main.mainproduct}">
+											Product</th>
+										<th class="tp-cart-header-price" th:text="#{main.price}">Price</th>
+										<th th:text="#{cart.action11}">Action</th>
+										<th th:text="#{krisshop.remove}">Remove</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="cartItem : ${wishlistedItems}">
+										<td class="tp-cart-img"><a
+												th:href="@{/category/productDetail/{id}(id=${cartItem.productsDetail.productDetailId})}">
+												<img th:src="@{/addproductimg/{imageName}(imageName=${cartItem.productsDetail.products.imageName})}"
+													alt=""></a></td>
+										<td th:text="${cartItem.productsDetail.products.name}" class="tp-cart-title">
+										</td>
+										<td class="tp-cart-price" th:text="'$ ' + ${cartItem.productPrice}">
+											<span>$76.00</span>
+										</td>
+										<form th:action="@{/add_to_cart_from_wishlist}" method="post">
+											<input type="hidden" name="productDetailId[]" id="productDetailId"
+												th:value="${cartItem.productsDetail.productDetailId}">
+											<td class="tp-cart-add-to-cart">
+												<button type="submit" class="tp-btn tp-btn-2 tp-btn-blue"
+													th:text="#{header.addtocart}">Add To
+													Cart</button>
+											</td>
+										</form>
+										<!-- action -->
+										<form th:action="@{/cart_remove}" method="post">
+											<td class="tp-cart-action">
+												<button class="tp-cart-action-btn">
+													<svg width="10" height="10" viewBox="0 0 10 10" fill="none"
+														xmlns="http://www.w3.org/2000/svg">
+														<path fill-rule="evenodd" clip-rule="evenodd"
+															d="M9.53033 1.53033C9.82322 1.23744 9.82322 0.762563 9.53033 0.46967C9.23744 0.176777 8.76256 0.176777 8.46967 0.46967L5 3.93934L1.53033 0.46967C1.23744 0.176777 0.762563 0.176777 0.46967 0.46967C0.176777 0.762563 0.176777 1.23744 0.46967 1.53033L3.93934 5L0.46967 8.46967C0.176777 8.76256 0.176777 9.23744 0.46967 9.53033C0.762563 9.82322 1.23744 9.82322 1.53033 9.53033L5 6.06066L8.46967 9.53033C8.76256 9.82322 9.23744 9.82322 9.53033 9.53033C9.82322 9.23744 9.82322 8.76256 9.53033 8.46967L6.06066 5L9.53033 1.53033Z"
+															fill="currentColor" />
+													</svg>&nbsp;
+													<input type="hidden" name="productDetailId[]" id="productDetailId"
+														th:value="${cartItem.productsDetail.productDetailId}">
+													<span><button class="tp-cart-action-btn remove-button" type="submit"
+															th:text="#{krisshop.remove}">
+															<span th:text="#{krisshop.remove}">Remove</span>
+														</button></span>
+												</button>
+											</td>
+										</form>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="tp-cart-bottom">
+							<div class="row align-items-end">
+								<div class="col-xl-6 col-md-4">
+									<div class="tp-cart-update">
+										<a th:href="@{/cart}" class="tp-cart-update-btn" th:text="#{cart.gotocart}">Go
+											To Cart</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- cart area end -->
+
+	</main>
+	<!-- footer area start -->
+	<div th:replace="amazonpage::fsastfooter">...</div>
+	<!-- footer area end -->
+
+
+
+	<!-- JS here -->
+	<script src="assets/js/vendor/jquery.js"></script>
+	<script src="assets/js/vendor/waypoints.js"></script>
+	<script src="assets/js/bootstrap-bundle.js"></script>
+	<script src="assets/js/meanmenu.js"></script>
+	<script src="assets/js/swiper-bundle.js"></script>
+	<script src="assets/js/slick.js"></script>
+	<script src="assets/js/range-slider.js"></script>
+	<script src="assets/js/magnific-popup.js"></script>
+	<script src="assets/js/nice-select.js"></script>
+	<script src="assets/js/purecounter.js"></script>
+	<script src="assets/js/countdown.js"></script>
+	<script src="assets/js/wow.js"></script>
+	<script src="assets/js/isotope-pkgd.js"></script>
+	<script src="assets/js/imagesloaded-pkgd.js"></script>
+	<script src="assets/js/ajax-form.js"></script>
+	<script src="assets/js/main.js"></script>
+</body>
+
+</html>

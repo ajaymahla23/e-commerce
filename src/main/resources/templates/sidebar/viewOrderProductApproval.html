@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>FSAST - Your Shop</title>
+	<link rel="shortcut icon" href="../../dashboard/assets/images/fsast_shop.png" />
+	<link rel="stylesheet" href="css/bootstrap1.min.css" />
+	<link rel="stylesheet" href="vendors/themify-icons.css" />
+	<link rel="stylesheet" href="vendors/all.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/jquery.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/responsive.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/buttons.dataTables.min.css" />
+	<link rel="stylesheet" href="vendors/metisMenu.css" />
+	<link rel="stylesheet" href="vendors/style1.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link rel="stylesheet"
+		href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+
+<style>
+	.card-body a,
+	.card-body p {
+		margin-bottom: -3px;
+	}
+</style>
+
+<body class="crm_body_bg">
+
+	<!-- loader_refresh -->
+	<!--<div th:replace="sidebar/mainpanelverifyshop::loader_refresh">...</div>-->
+	<!--loader_refresh area end -->
+
+	<!-- Mobile menu bottom -->
+	<div th:replace="sidebar/mainpanelverifyshop::mobile_bottom_menu">...</div>
+	<!-- mobile menu area end -->
+
+	<nav class="sidebar">
+		<div th:if="${storeverification != null}"
+			class="aiz-user-sidenav rounded overflow-auto c-scrollbar-light pb-5 pb-xl-0">
+			<div th:if="${storeverification.status == 'Y'}">
+				<div th:replace="sidebar/mainpanelverifyshop::sidebar">...</div>
+			</div>
+			<div th:if="${storeverification.status == 'N'}">
+				<div th:replace="sidebar/mainpanel::sidebar">...
+				</div>
+			</div>
+		</div>
+		<div th:if="${storeverification == null}"
+			class="aiz-user-sidenav rounded overflow-auto c-scrollbar-light pb-5 pb-xl-0">
+			<div th:replace="sidebar/mainpanel::sidebar">...
+			</div>
+		</div>
+	</nav>
+
+	<section class="main_content dashboard_part large_header_bg" style="background-color: #e6f1f5;">
+		<!--NAVBAR-->
+		<div th:replace="sidebar/mainpanelverifyshop::navbar">...</div>
+
+		<div class="main_content_iner " style="background-color: #e6f1f5;">
+			<div class="container-fluid p-0">
+				<div class="row justify-content-center">
+					<!--latest desktop screen-->
+					<style>
+						@media (max-width: 767px) {
+							.show-desktop {
+								display: none;
+							}
+						}
+					</style>
+
+					<div class="col-lg-12 show-desktop">
+						<div class="white_card card_height_100 mb_30">
+							<div class="white_card_header">
+								<div class="box_header m-0">
+									<div class="main-title">
+										<h3 class="m-0" th:text="#{vieworder.ordersummary}">
+											Order Summary</h3>
+									</div>
+									<button class="btn" style="background-color: #30778A;color: white;border: none;"
+										onclick="history.back()" th:text="#{order.goback}">Go Back</button>
+								</div>
+							</div>
+							<div class="white_card_body">
+								<div class="card-body">
+									<form th:each="detail ,iStat: ${myOrderDetail}">
+
+
+										<!--status buttons-->
+										<div class="row mb-3">
+											<!--<div class=" col-md-3">
+												<strong class="form-label" th:text="#{dashboard.buyerpay12}">Buyer
+													Pay</strong>
+												<p class="btn"
+													style="color: white;background-color: mediumseagreen;border: none;"
+													th:if="${detail.myOrder.userPayemetnStatus} == 'Y'"
+													th:text="#{order.buyerhaspaid}">Buyer has paid</p>
+											</div>-->
+
+											<div class="col-md-3">
+												<strong class="form-label" th:text="#{dashboard.logicstssttus12}">
+													Logistics
+													Status</strong>
+												<p class="btn" style="color: white;background-color: #ff6666;"
+													th:if="${detail.myOrder.adminDeliveryStatus} == 'N'"
+													th:text="#{order.buyerhaspaid}" alt="The buyer has paid">The buyer
+													has paid</p>
+
+												<p class="btn" style="color: white;background-color: dodgerblue;"
+													th:if="${detail.myOrder.adminDeliveryStatus} == 'W'"
+													th:text="#{order.waitingtoprocess}" alt="waiting to process">
+													waiting to process</p>
+
+												<p class="btn" style="color: white;background-color: lightgray;"
+													th:if="${detail.myOrder.adminDeliveryStatus} == 'L'"
+													th:text="#{order.logisticsandtrean}"
+													alt="Logistics and transportation">Logistics and transportation</p>
+
+												<p class="btn" style="color: white;background-color: mediumseagreen;"
+													th:if="${detail.myOrder.adminDeliveryStatus} == 'A'"
+													th:text="#{main.complete}" alt="Complete">Complete</p>
+
+												<p class="btn" style="color: white;background-color: darkred;"
+													th:if="${detail.myOrder.adminDeliveryStatus} == 'C'"
+													th:text="#{main.deliverycancel}" alt="delivery cancel">delivery
+													cancel</p>
+											</div>
+											<div class=" col-md-3">
+												<strong class="form-label" th:text="#{dashboard.purachsesttus1}">
+													Purchase
+													Status</strong>
+												<p class="btn"
+													style="color: white;background-color: #ff6666;border: none;"
+													th:if="${detail.myOrder.status} == 'N'"
+													th:text="#{order.tobepurchase}" alt="To be purchase">To be
+													purchase</p>
+
+												<p class="btn"
+													style="color: white;background-color: green;border: none;"
+													th:if="${detail.myOrder.status} == 'Y'"
+													th:text="#{order.purchased11}" alt="Purchased">Purchased</p>
+											</div>
+											<div class="col-md-3">
+												<strong class="form-label" th:text="#{order.purchasetime}">Purchase
+													Time</strong>
+												<p class="btn" th:if="${detail.myOrder.approvalDate} ==null"
+													style="color: white;background-color: #ff6666;"
+													th:text="#{oreder.toberegview11}" alt="To be review">To be
+													review</p>
+
+												<p class="btn" th:if="${detail.myOrder.approvalDate} !=null"
+													style="color: white;background-color: #ff6666;"
+													th:text="${#dates.format(detail.myOrder.approvalDate, 'dd-MMM-yyyy')}">
+												</p>
+											</div>
+
+
+										</div>
+
+										<!--end buttons-->
+
+
+										<div class="row mb-3">
+											<div class=" col-md-4">
+												<label class="form-label" for="inputCity"
+													th:text="#{dashboard.ordernumber}"> Order
+													Number</label>
+												<input class="form-control" type="text" id="ordernumber" readonly
+													th:value="${detail.myOrder.orderId}">
+											</div>
+											<div class=" col-md-4">
+												<label class="form-label" th:text="#{vieworder.orderdate}">Order
+													Date</label>
+												<input type="text" class="form-control" id="unitPrice" readonly
+													th:value="${#dates.format(detail.myOrder.date, 'dd-MMM-yyyy')}">
+											</div>
+											<div class="col-md-4">
+												<label class="form-label" th:text="#{order.purchasetime}">Purchase
+													Time</label>
+												<input type="text" class="form-control" id="approvalDate" readonly
+													th:if="${detail.myOrder.approvalDate} ==null"
+													style="color: red;background-color: #ebb7b7;"
+													th:value="#{oreder.toberegview11}" alt="To be review">
+
+												<input type="text" class="form-control" id="purchasePrice" readonly
+													th:if="${detail.myOrder.approvalDate} !=null"
+													th:value="${#dates.format(detail.myOrder.approvalDate, 'dd-MMM-yyyy')}">
+											</div>
+										</div>
+
+
+										<div class="row mb-3">
+											<div class=" col-md-4">
+												<label class="form-label" th:text="#{order.salesamout11}">Sales
+													Amount</label>
+												<input type="text" class="form-control" id="mallproductprice" readonly
+													th:value="${detail.mallproductprice}">
+											</div>
+											<div class=" col-md-4">
+												<label class="form-label" th:text="#{header.totalpricecart}">
+													Total Price</label>
+												<input type="text" class="form-control" id="amount" readonly
+													th:value="${detail.myOrder.amount}">
+											</div>
+											<div class="col-md-4">
+												<label class="form-label"
+													th:text="#{vieworder.orderprofit}">Profit</label>
+												<input type="text" class="form-control" id="estimatedProfit" readonly
+													th:value="${detail.estimatedProfit}">
+											</div>
+										</div>
+
+
+
+										<!--contact buyer-->
+										<hr class="mb-0">
+										<h6 class=" mb-0 p-1 mt-2" style="color: #30778A;"
+											th:text="#{order.contactbuyer}">
+											Contact Buyer</h6>
+										<hr class="mt-0">
+
+										<div class="row mb-3">
+											<div class=" col-md-4">
+												<label class="form-label" th:text="#{dashboard.buyerpay12}">Buyer
+													Pay</label>
+												<input type="text" class="form-control" id="userPayemetnStatus" readonly
+													style="color: green;background-color: #b8d9b8;"
+													th:if="${detail.myOrder.userPayemetnStatus} == 'Y'"
+													th:value="#{order.buyerhaspaid}" alt="Buyer has paid">
+											</div>
+											<div class=" col-md-4">
+												<label class="form-label" th:text="#{vieworder.ordercustomer}">
+													Customer</label>
+												<input type="text" class="form-control" id="customer" readonly
+													th:value="${detail.myOrder.user.firstName}">
+											</div>
+											<div class="col-md-4">
+												<label class="form-label"
+													th:text="#{vieworder.orderemail}">Email</label>
+												<input type="text" class="form-control" id="email" readonly
+													th:value="${detail.myOrder.user.email}">
+											</div>
+										</div>
+
+										<div class="row mb-3">
+											<div class=" col-md-4">
+												<label class="form-label" th:text="#{vieworder.ordercontact}">
+													Contact</label>
+												<input type="text" class="form-control" id="mobileNumber" readonly
+													th:value="${detail.myOrder.user.mobileNumber}">
+											</div>
+											<div class=" col-md-4">
+												<label class="form-label" th:text="#{main.orderreceipt}">
+													Receipt</label>
+												<input type="text" class="form-control" id="receipt" readonly
+													th:value="${detail.myOrder.receipt}">
+											</div>
+											<div class="col-md-4">
+												<label class="form-label" th:text="#{vieworder.shippingaddrees11}">
+													Shipping Address</label>
+												<input type="text" class="form-control" id="shippingAddress" readonly
+													th:value="${detail.myOrder.shippingOrder.shippingAddress}">
+											</div>
+										</div>
+
+										<div class="row mb-3">
+											<div class=" col-md-4">
+												<label class="form-label" th:text="#{vieworder.state1}">State</label>
+												<input type="text" class="form-control" id="state" readonly
+													th:value="${detail.myOrder.shippingOrder.state}">
+											</div>
+											<div class=" col-md-4">
+												<label class="form-label" th:text="#{vieworder.country1}">
+													Country</label>
+												<input type="text" class="form-control" id="country" readonly
+													th:value="${detail.myOrder.shippingOrder.country}">
+											</div>
+											<div class="col-md-4">
+												<label class="form-label" th:text="#{vieworder.pincode}">
+													Pin code</label>
+												<input type="text" class="form-control" id="pincode" readonly
+													th:value="${detail.myOrder.shippingOrder.pincode}">
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--end desktop screen-->
+
+
+					<!--mobile screen-->
+					<div class="col-lg-12 d-lg-none"
+						style="padding-right: calc(var(--bs-gutter-x) * .0); padding-left: calc(var(--bs-gutter-x) * .0);">
+						<div class="white_card card_height_100 mb_30">
+							<div class="white_card_header">
+								<div class="box_header m-0">
+									<div class="main-title">
+										<h3 class="m-0" th:text="#{vieworder.ordersummary}">
+											Order Summary</h3>
+									</div>
+									<button class="btn" style="background-color: #30778A;color: white;border: none;"
+										onclick="history.back()" th:text="#{order.goback}">Go Back</button>
+								</div>
+							</div>
+							<div class="white_card_body" style="padding: 5px 11px 27px;">
+								<div class="QA_section">
+									<div class="card-body" th:each="detail ,iStat: ${myOrderDetail}"
+										style=" padding: 1px 0.1rem;">
+										<div class="card border shadow-none">
+											<div class="white_card_header border_bottom_1px"
+												style="padding: 14px 18px;">
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center"
+														th:text="#{dashboard.logicstssttus12}">
+														Logistics
+														Status</span>
+													<p style="color: red;"
+														th:if="${detail.myOrder.adminDeliveryStatus} == 'N'"
+														th:text="#{order.buyerhaspaid}">The buyer has paid</p>
+													<p style="color: dodgerblue;"
+														th:if="${detail.myOrder.adminDeliveryStatus} == 'W'"
+														th:text="#{order.waitingtoprocess}">waiting to
+														process</p>
+													<p style="background-color: lightgray;color: black;"
+														th:if="${detail.myOrder.adminDeliveryStatus} == 'L'"
+														th:text="#{order.logisticsandtrean}">Logistics and
+														transportation</p>
+													<p style="color: mediumseagreen;"
+														th:if="${detail.myOrder.adminDeliveryStatus} == 'A'"
+														th:text="#{main.complete}">Complete</p>
+													<p style="color: darkred"
+														th:if="${detail.myOrder.adminDeliveryStatus} == 'C'"
+														th:text="#{main.deliverycancel}">delivery cancel</p>
+												</a>
+
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center" th:text="#{dashboard.ordernumber}">
+														Order Number</span>
+													<p th:text="${detail.myOrder.orderId}"></p>
+												</a>
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center"
+														th:text="#{vieworder.orderdate}">Order
+														Date</span>
+													<p th:text="${#dates.format(detail.myOrder.date, 'dd-MMM-yyyy')}">
+													</p>
+												</a>
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center"
+														th:text="#{order.purchasetime}">Purchase
+														Time</span>
+													<p th:if="${detail.myOrder.approvalDate} ==null"
+														style="color: #30778A;" th:text="#{oreder.toberegview11}">To be
+														review</p>
+													<p th:if="${detail.myOrder.approvalDate} !=null"
+														th:text="${#dates.format(detail.myOrder.approvalDate, 'dd-MMM-yyyy')}">
+													</p>
+												</a>
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center"
+														th:text="#{order.salesamout11}">Sales
+														Amount</span>
+													<p th:text="${'$ '+detail.mallproductprice}"></p>
+												</a>
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center" th:text="#{header.totalpricecart}">
+														Total Price</span>
+													<p th:text="'$ ' + ${detail.myOrder.amount}"></p>
+												</a>
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center"
+														th:text="#{vieworder.orderprofit}">Profit</span>
+													<p th:text="'$ '+${detail.estimatedProfit}"></p>
+												</a>
+
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center"
+														th:text="#{dashboard.purachsesttus1}"> Purchase
+														Status</span>
+													<p style="color: red;" th:if="${detail.myOrder.status} == 'N'"
+														th:text="#{order.tobepurchase}">To
+														be purchase</p>
+													<p style="color: mediumseagreen"
+														th:if="${detail.myOrder.status} == 'Y'"
+														th:text="#{order.purchased11}">
+														Purchased</p>
+												</a>
+												<!--contact buyer-->
+												<hr class="mb-0">
+												<h6 class=" mb-0 p-1 mt-2" style="color: #30778A;"
+													th:text="#{order.contactbuyer}">
+													Contact Buyer</h6>
+												<hr class="mt-0">
+
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center"
+														th:text="#{dashboard.buyerpay12}">Buyer
+														Pay</span>
+													<p style="color: mediumseagreen"
+														th:if="${detail.myOrder.userPayemetnStatus} == 'Y'"
+														th:text="#{order.buyerhaspaid}">Buyer has paid</p>
+												</a>
+
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center"
+														th:text="#{vieworder.ordercustomer}">
+														Customer</span>
+													<p th:text="${detail.myOrder.user.firstName}"></p>
+												</a>
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center"
+														th:text="#{vieworder.orderemail}">Email</span>
+													<p th:text="${detail.myOrder.user.email}">
+													</p>
+												</a>
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center" th:text="#{vieworder.ordercontact}">
+														Contact</span>
+													<p th:text="${detail.myOrder.user.mobileNumber}"></p>
+												</a>
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center" th:text="#{main.orderreceipt}">
+														Receipt</span>
+													<p th:text="${detail.myOrder.receipt}"></p>
+												</a>
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center"
+														th:text="#{vieworder.shippingaddrees11}">
+														Shipping Address</span>
+													<p th:text="${detail.myOrder.shippingOrder.shippingAddress}">
+													</p>
+												</a>
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center"
+														th:text="#{vieworder.state1}">State</span>
+													<p th:text="${detail.myOrder.shippingOrder.state}"></p>
+												</a>
+
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center" th:text="#{vieworder.country1}">
+														Country</span>
+													<p th:text="${detail.myOrder.shippingOrder.country}"></p>
+												</a>
+
+												<a href class="text-dark d-flex justify-content-between">
+													<span class="align-self-center" th:text="#{vieworder.pincode}">
+														Pin code</span>
+													<p th:text="${detail.myOrder.shippingOrder.pincode}"></p>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--end  mobile screen-->
+
+
+					<!--product detail list-->
+					<div class="col-lg-12">
+						<div class="white_card card_height_100 mb_30">
+							<div class="white_card_header">
+								<div class="box_header m-0">
+									<div class="main-title">
+										<h3 class="m-0" th:text="#{vieworder.orderproddetil}">Product
+											Detail</h3>
+									</div>
+								</div>
+							</div>
+							<div class="white_card_body">
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="table" id="serialNumber">
+											<thead style="font-weight: bold;">
+												<tr>
+													<th scope="col" th:text="#{vieworder.orderproduct}">
+														Product</th>
+													<th scope="col" th:text="#{vieworder.orderqt}">Quantity
+													</th>
+													<th scope="col" th:text="#{vieworder.orderprice}">Price
+														Per Product</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="orderDetail,iter  : ${myOrderDetailByShop}">
+													<td><img width="60"
+															th:src="@{/addproductimg/{imageName}(imageName=${orderDetail.productsDetail.products.imageName})}">
+														<span
+															th:text="${orderDetail.productsDetail.products.name}"></span>
+													</td>
+													<td th:text="${orderDetail.totalqty}"></td>
+													<td th:text="${orderDetail.productPrice}">
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-12">
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--FOOTER-->
+		<!--<div th:replace="sidebar/mainpanelverifyshop::footer">...</div>-->
+	</section>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			document.getElementById('language-select').addEventListener('change', function () {
+				console.log('Language selected:', this.value);
+				window.location.href = '?lang=' + this.value;
+			});
+		});
+		$(document).ready(function () {
+			var currentLang = $('html').attr('lang');
+			$('#language-select').val(currentLang);
+		});
+	</script>
+
+	<script src="vendors/datatable/js/jquery1-3.4.1.min.js"></script>
+	<script src="vendors/datatable/js/popper1.min.js"></script>
+	<script src="vendors/datatable/js/bootstrap1.min.js"></script>
+	<script src="vendors/datatable/js/metisMenu.js"></script>
+	<script src="vendors/datatable/js/jquery.dataTables.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.responsive.min.js"></script>
+	<script src="vendors/datatable/js/dataTables.buttons.min.js"></script>
+	<script src="vendors/datatable/js/buttons.flash.min.js"></script>
+	<script src="vendors/datatable/js/jszip.min.js"></script>
+	<script src="vendors/datatable/js/pdfmake.min.js"></script>
+	<script src="vendors/datatable/js/vfs_fonts.js"></script>
+	<script src="vendors/datatable/js/buttons.html5.min.js"></script>
+	<script src="vendors/datatable/js/buttons.print.min.js"></script>
+	<script src="vendors/datatable/js/perfect-scrollbar.min.js"></script>
+	<script src="vendors/datatable/js/scrollable-custom.js"></script>
+	<script src="vendors/datatable/js/custom.js"></script>
+</body>
+
+</html>
